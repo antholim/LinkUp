@@ -1,6 +1,6 @@
 # Project Name: LinkUp
 
-## Description / Objective
+## Description
 LinkUp is a modern messaging platform designed to streamline communication and collaboration for teams, communities, and individuals inspired by platforms like Discord, Slack, and Microsoft Teams.
 
 ## Objective
@@ -30,5 +30,22 @@ Our goal is to create a seamless, user-friendly experience with enhanced feature
 
 ## Installation & Setup
 To set up the project locally, follow these steps:
+
 1. Clone the repository:
    git clone https://github.com/[your-username]/[your-repo-name].git
+
+2. Download Node.js 22.13.1:
+   https://nodejs.org/en/download
+
+3. Navigate to src/Backend and execute:
+    ```npm install```
+
+4. Create .env file (refer to .env.example) in ./src/Backend
+
+5. Execute:
+   ```node index.js```
+
+6. Open new terminal
+
+7. Navigate to src/Frontend and execute:
+   ```npm install```
