@@ -7,37 +7,16 @@ Goal: Develop and deploy core messaging functionalities of the communication pla
   - Allow users to browse and join channels.
   - Enable users to send and receive messages in channels.
 
-
 ## 2. User Stories Board
 
-
-## 4. Dependencies
-
-### Database Interaction:
-  - Associated User Stories: 
-  - Associated Tasks: 
-  - Responsible/Owner: 
-    
-### Real-Time Messaging Logic:
-  - Associated User Stories: #19, #40
-  - Associated Tasks: #60, #61, #62, #63, #64, #65
-  - Responsible/Owner: 
-    
-### Database Management:
-  - Associated User Stories: 
-  - Associated Tasks: 
-  - Responsible/Owner: 
-    
-### Access Control and User Authentication:
-  - Associated User Story: 
-  - Associated Tasks: 
-  - Responsible/Owner: 
-    
-### Message Management:
-  - Associated User Story:
-  - Associated Tasks: 
-  - Responsible/Owner: 
+| Issue | User Story Title | Story Points | Due Date | Associated Tasks | Priority | Risk | Responsible/Owner |
+| -- | -- | -- | -- | -- | -- | -- | -- |
+| #7 | Send messages predefined channels | 7 | Mar. 2 | 7.1 7.2 7.3 7.4 | High | Medium: Database interaction | Victor, Noah |
+| #6 | Join predefined channels | 8 | Mar. 2 | 6.1 6.2 6.3 6.4 | High | High: Real-time messaging logic | Noah |
+| #5 | Role-Based User Permissions | 7 | Mar. 2 |  | High | High: WebSocket-based interactions | Andrew |
+| #4 | Setup project monorepo | 4 | Mar. 2 |  | High | Medium: Database management | Anthony |
+| #3 | Direct Messaging Between Users | 4 | Mar. 2 | | High | Medium: Access control logic | Andrew, Anthony |
+| #2 | Text Channels for Group Communication | 4 | Mar. 2 |  | High | Medium: Message management | Victor, Noah |
 
 ## 5. Conclusion
 The objective of Sprint 2 is to implement core messaging functionalities. By focusing on iterative development and addressing key dependencies, we aim to deliver a functional and scalable communication platform within the planned timeline.
-
