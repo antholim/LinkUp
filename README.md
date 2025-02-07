@@ -49,3 +49,4 @@ To set up the project locally, follow these steps:
 
 7. Navigate to src/Frontend and execute:
    ```npm install```
+8. ```npm run dev```
