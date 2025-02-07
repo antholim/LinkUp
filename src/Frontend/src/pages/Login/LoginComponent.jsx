@@ -38,10 +38,11 @@ function LoginComponent() {
         <div className="page">
             <div className="content">
                 <div className="left-column-log">
-                    <h1 className="slogan">LINKUP <br />
-                        Connect. <br></br>
+                    <h1 className="Title">LINKUP <br />
+                    <h1 className="slogan">Connect. <br></br>
                         Collaborate. <br></br>
-                        Create.</h1>
+                        Create.</h1></h1>
+
                 </div>
                     
 
