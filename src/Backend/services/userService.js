@@ -14,7 +14,7 @@ export default class UserService {
      *   accessToken?: string
      * }
      */
-    async registerUser(email, password, name) {
+    async registerUser(email, password, username) {
         const hashedPassword = await bcrypt.hash(password, 10);
         try {
             // let existingUser;
@@ -28,7 +28,7 @@ export default class UserService {
             const user = await User.create({
                 email: email,
                 password: hashedPassword,
-                name: name,
+                username: username,
             });
             return {
                 status: 200,

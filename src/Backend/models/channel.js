@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const channelSchema = new mongoose.Schema({
-    name: {
+    channelName: {
         type:String,
         required:true
     },
