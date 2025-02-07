@@ -43,10 +43,19 @@ function RegisterComponent() {
     };
     
     return (
-        <div>
-            <h2>Register</h2>
+        <div className="page">
+            <div className="content">
+            <div className="left-column-log">
+                    <h1 className="Title">LINKUP <br />
+                    <h1 className="slogan">Connect. <br></br>
+                        Collaborate. <br></br>
+                        Create.</h1></h1>
+            </div>
+            
+            <div className="right-column-log">
+            <h2 className="h2Log">Register</h2>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="input-group">
                     <label htmlFor="email">Email</label>
                     <input
                     id="email"
@@ -58,7 +67,7 @@ function RegisterComponent() {
                     />
                 </div>
 
-                <div>
+                <div className="input-group">
                     <label htmlFor="username">Username</label>
                     <input 
                     id="username"
@@ -71,7 +80,7 @@ function RegisterComponent() {
                 </div>
                 
 
-                <div>
+                <div className="input-group">
                 <label htmlFor="password">Password</label>
                     <input 
                     id="password"
@@ -82,6 +91,7 @@ function RegisterComponent() {
                     required
                     />
                 </div>
+                <div className="input-group">
                 <label htmlFor="password">Confirm Password</label>
                     <input
                     id="confirmingPassword"
@@ -91,10 +101,12 @@ function RegisterComponent() {
                     onChange = {(e)=>setConfirmPassword(e.target.value)}
                     required
                     />
-                <div>
                 </div>
                 <button type="submit">Register</button>
             </form>
+            </div>
+        </div>
+
         </div>
     )
 } export default RegisterComponent;

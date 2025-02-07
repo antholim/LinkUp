@@ -42,15 +42,13 @@ function LoginComponent() {
                     <h1 className="slogan">Connect. <br></br>
                         Collaborate. <br></br>
                         Create.</h1></h1>
-
                 </div>
                     
-
             <div className="right-column-log">
             <h2 className="h2Log">Login</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email" className="textLog">Email:    </label>
+                <div className="input-group">
+                    {/* <label htmlFor="email" className="textLog">Email:    </label> */}
                     <input 
                     id="email"
                     type="email"
@@ -61,8 +59,9 @@ function LoginComponent() {
                     />
                 </div>
 
-                <div>
-                <br></br><label htmlFor="password" className="textLog">Password:    </label>
+                <div className="input-group">
+                <br></br>
+                {/* <label htmlFor="password" className="textLog">Password:    </label> */}
                     <input 
                     id="password"
                     type="password"
