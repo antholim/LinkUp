@@ -29,9 +29,9 @@ function RegisterComponent() {
         });
 
         const data = await response.json();
-        if (data.success) {
+        if (data.status === 200) {
         alert('Registration successful! Please login.');
-        navigate('/home');
+        navigate('/login');
         } else {
         alert('Registration failed: ' + data.message);
         }
