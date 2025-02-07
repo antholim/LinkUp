@@ -1,9 +1,10 @@
 import LoginComponent from "./LoginComponent";
+import './LoginPage.css';
 
 function LoginPage() {
     return (
         <>
-            <LoginComponent/>
+            <LoginComponent />
         </>
     )
 } export default LoginPage;
