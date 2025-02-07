@@ -12,7 +12,7 @@ function App() {
 
   useEffect(()=>{
 
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("accessToken");
     if(token){
       setIsAuthenticated(true);
     }

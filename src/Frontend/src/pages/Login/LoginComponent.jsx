@@ -12,7 +12,7 @@ function LoginComponent() {
 
         try{
 
-            const response = await fetch('http://localhost:3000/api/login', {
+            const response = await fetch('http://localhost:3000/login', {
                 method: 'POST',
                 headers:{
                     'Content-Type': 'application/json',
@@ -21,9 +21,9 @@ function LoginComponent() {
             });
 
             const data = await response.json();
-
-            if(data.success){
-                localStorage.setItem('authToken', data.token);
+            console.log(data)
+            if(data.status == 200){
+                localStorage.setItem('accessToken', data.accessToken);
                 navigate('/home')
             }else{
                 alert('Login failed: '+ data.message);
