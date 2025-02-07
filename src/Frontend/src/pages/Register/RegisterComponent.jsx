@@ -20,7 +20,7 @@ function RegisterComponent() {
   
     try {
         // Send registration request to backend
-        const response = await fetch('http://localhost:3000/api/register', {
+        const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ function RegisterComponent() {
                     id="username"
                     type="username"
                     placeholder="Enter your username"
-                    value={email}
+                    value={username}
                     onChange = {(e)=>setUsername(e.target.value)}
                     required
                     />
