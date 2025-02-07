@@ -1,5 +1,4 @@
 
-
 * {
     margin: 0;
     padding: 0;
@@ -30,6 +29,8 @@
     max-width: 1200px;
     gap: 30px;
 }
+
+
 .right-column-log {
     width: 50%;
     height: 100%;
@@ -60,11 +61,12 @@
     transition: all 0.3s ease;
 }
 
-  
+
 .right-column-log button:hover {
     background-color: #e67e22;
 }
-  
+
+
 .right-column-log h2 {
     font-size: 3rem;
     margin-bottom: 20px;
@@ -82,7 +84,32 @@
     font-size: 1.5rem;
 }
 
-.textLog{
+/* .textLog{
     font-size: 1.5rem;
+} */
+
+.input-group {
+    margin-bottom: 20px;
+    width: 100%;
 }
 
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: Arial, sans-serif;
+}
+
+.input-group input::placeholder {
+    color: #aaa;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+}
