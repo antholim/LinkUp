@@ -20,7 +20,7 @@ const registerController = () => {
     return async function (req, res) {
         try {
             console.log("Trying to register");
-            const response = await userService.registerUser(req.body.email, req.body.password, req.body.name);
+            const response = await userService.registerUser(req.body.email, req.body.password, req.body.username);
             console.log(response);
             res.status(200).json(response);
         } catch (error) {

@@ -55,7 +55,7 @@ export default class UserService {
     */
     async authenticateUser(email, password) {
         try {
-            const user = await User.findOne({ email: email });
+            const user = await User.findOne({ $or: [{ email: email }, { username: email }] });
             if (!user) {
                 return {
                     status: 404,
