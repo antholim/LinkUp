@@ -6,8 +6,8 @@ function RootPage() {
     const navigate = useNavigate();
 
     const handleLoginRedirect = () => {
-    navigate('/login'); 
-    };
+    navigate('/login');
+};
 
     const handleRegisterRedirect = () => {
     navigate('/register');

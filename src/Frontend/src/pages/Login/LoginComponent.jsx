@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './LoginPage.css';
 
 function LoginComponent() {
 
@@ -34,11 +35,21 @@ function LoginComponent() {
     };
     
     return (
-        <div>
-            <h2>Login</h2>
+        <div className="page">
+            <div className="content">
+                <div className="left-column-log">
+                    <h1 className="slogan">LINKUP <br />
+                        Connect. <br></br>
+                        Collaborate. <br></br>
+                        Create.</h1>
+                </div>
+                    
+
+            <div className="right-column-log">
+            <h2 className="h2Log">Login</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email" className="textLog">Email:    </label>
                     <input 
                     id="email"
                     type="email"
@@ -50,7 +61,7 @@ function LoginComponent() {
                 </div>
 
                 <div>
-                <label htmlFor="password">Password</label>
+                <br></br><label htmlFor="password" className="textLog">Password:    </label>
                     <input 
                     id="password"
                     type="password"
@@ -61,8 +72,10 @@ function LoginComponent() {
                     />
                 </div>
 
-                <button type="submit">Login</button>
+                <br></br><button type="submit">Login</button>
             </form>
+            </div>
+        </div>
         </div>
     )
 

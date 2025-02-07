@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function RegisterComponent() {
 
     const [email,setEmail]=useState('');
+    const [username, setUsername]=useState('');
     const [password,setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ function RegisterComponent() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, username, password }),
         });
 
         const data = await response.json();
@@ -47,7 +48,7 @@ function RegisterComponent() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input 
+                    <input
                     id="email"
                     type="email"
                     placeholder="Enter your email"
@@ -56,6 +57,19 @@ function RegisterComponent() {
                     required
                     />
                 </div>
+
+                <div>
+                    <label htmlFor="username">Username</label>
+                    <input 
+                    id="username"
+                    type="username"
+                    placeholder="Enter your username"
+                    value={email}
+                    onChange = {(e)=>setUsername(e.target.value)}
+                    required
+                    />
+                </div>
+                
 
                 <div>
                 <label htmlFor="password">Password</label>
@@ -77,12 +91,8 @@ function RegisterComponent() {
                     onChange = {(e)=>setConfirmPassword(e.target.value)}
                     required
                     />
-
                 <div>
-                    
-
                 </div>
-
                 <button type="submit">Register</button>
             </form>
         </div>
