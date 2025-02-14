@@ -52,6 +52,7 @@ To set up the project locally, follow these steps:
 
 ## Legend for Poker Planning
 | Story Point |  Time (hours)  |
+| ----------- |  ------------  |
 |      1      |  1-3 hours     |
 |      2      |  4-6 hours     |
 |      3      |  7-10 hours    |
