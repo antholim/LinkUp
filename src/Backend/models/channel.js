@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Message } from "./message";
 
 const channelSchema = new mongoose.Schema({
     channelName: {
@@ -14,6 +15,9 @@ const channelSchema = new mongoose.Schema({
     },
     members: {
         type: [String],
+    },
+    messages: {
+        type:[Message]
     }
 },{ timestamps: true });
 
