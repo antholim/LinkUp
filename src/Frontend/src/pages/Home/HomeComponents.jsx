@@ -30,6 +30,7 @@ function HomeComponent() {
             >
                 Logout
             </button>
+            <button>AUUTHENTICATED</button>
         </div>
     );
 }

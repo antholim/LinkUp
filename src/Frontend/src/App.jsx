@@ -3,6 +3,7 @@ import HomePage from './pages/Home/HomePage';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 import RootPage from './pages/Root/RootPage';
+import MessagingPage from "./pages/Message/MessagingPage";
 import { useEffect, useState, createContext, useContext } from "react";
 // ... existing imports ...
 
@@ -39,6 +40,10 @@ function App() {
       path: "/home",
       element: isAuthenticated ? <HomePage /> : <Navigate to="/login" />,
     },
+    {
+      path: "/direct-message",
+      element: !isAuthenticated ? <MessagingPage /> : <Navigate to="/login" />,
+  },
   ]);
 
   return (
