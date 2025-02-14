@@ -4,6 +4,7 @@ import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 import RootPage from './pages/Root/RootPage';
 import MessagingPage from "./pages/Message/MessagingPage";
+import ChannelsPage from "./pages/Channel/ChannelsPage";
 import { useEffect, useState, createContext, useContext } from "react";
 // ... existing imports ...
 
@@ -18,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    if(token) {
+    if (token) {
       setIsAuthenticated(true);
     }
   }, []);
@@ -43,7 +44,11 @@ function App() {
     {
       path: "/direct-message",
       element: !isAuthenticated ? <MessagingPage /> : <Navigate to="/login" />,
-  },
+    },
+    {
+      path: "/channels",
+      element: !isAuthenticated ? <ChannelsPage /> : <Navigate to="/login" />,
+    },
   ]);
 
   return (
