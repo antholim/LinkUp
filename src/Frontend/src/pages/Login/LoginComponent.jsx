@@ -1,36 +1,38 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../App";
 import './LoginPage.css';
 
 function LoginComponent() {
-
-    const [email,setEmail]=useState('');
-    const [password,setPassword] = useState('');
+    const { setIsAuthenticated } = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try{
-
+        try {
             const response = await fetch('http://localhost:3000/login', {
                 method: 'POST',
-                headers:{
+                headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({email,password}),
+                body: JSON.stringify({ email, password }),
             });
 
             const data = await response.json();
             console.log(data)
-            if(data.status == 200){
+            if (data.status == 200) {
+                console.log("TEST")
                 localStorage.setItem('accessToken', data.accessToken);
+                setIsAuthenticated(true)
                 navigate('/home')
-            }else{
-                alert('Login failed: '+ data.message);
+            } else {
+                alert('Login failed: ' + data.message);
             }
-        }catch(error){
-            alert('An error occured: '+ error.message);
+        } catch (error) {
+            alert('An error occured: ' + error.message);
         }
     };
     
@@ -51,8 +53,8 @@ function LoginComponent() {
                     {/* <label htmlFor="email" className="textLog">Email:    </label> */}
                     <input 
                     id="email"
-                    type="email"
-                    placeholder="Enter your email"
+                    type="text"
+                    placeholder="Enter email or username"
                     value={email}
                     onChange = {(e)=>setEmail(e.target.value)}
                     required
@@ -78,5 +80,4 @@ function LoginComponent() {
         </div>
         </div>
     )
-
 } export default LoginComponent;

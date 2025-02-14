@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import {useAuth} from "../../App.jsx"
+
 
 function HomeComponent() {
     const navigate = useNavigate();
+    const { setIsAuthenticated } = useAuth();
 
     const handleLogout = () => {
 
         localStorage.removeItem("accessToken");
-
+        setIsAuthenticated(()=> false);
         navigate("/login");
     };
 

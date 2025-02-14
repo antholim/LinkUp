@@ -6,4 +6,6 @@ function LoginPage() {
             <LoginComponent />
         </>
     )
-} export default LoginPage;
+} 
+
+export default LoginPage;
