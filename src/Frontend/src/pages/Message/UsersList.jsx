@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {fakeUsers} from "../data/FakeUsers.js"
+import { fakeUsers } from '../../data/FakeUsers';
 
 function UsersList({ onSelectUser }) {
     const [users, setUsers] = useState(fakeUsers);
