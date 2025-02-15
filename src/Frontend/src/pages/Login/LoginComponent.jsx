@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './LoginPage.css';
+import NavigationButtons from "../../components/NavigationButton";
 
 function LoginComponent() {
 
@@ -36,6 +37,7 @@ function LoginComponent() {
     
     return (
         <div className="page">
+            <NavigationButtons />
             <div className="content">
                 <div className="left-column-log">
                     <h1 className="Title">LINKUP <br />
