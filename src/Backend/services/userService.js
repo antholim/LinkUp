@@ -24,8 +24,15 @@ export default class UserService {
             //         status: 409,
             //         message: "User already exists"
             //     }
-            // }
-            const user = await User.create({
+            // }            
+            let user = await User.findOne({ $or: [{ email: email }, { username: email }] });
+            if (user) {
+                return {
+                    status: 409,
+                    message: "User already exists"
+                }
+            }
+            user = await User.create({
                 email: email,
                 password: hashedPassword,
                 username: username,
