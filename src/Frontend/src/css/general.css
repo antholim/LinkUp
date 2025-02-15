@@ -1,0 +1,18 @@
+.nav-buttons button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    padding: 10px 15px;
+    color: white;
+    border: none;
+    background-color: #e74c3c;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background-color: #e67e22;
+}

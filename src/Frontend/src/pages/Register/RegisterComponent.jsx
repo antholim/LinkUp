@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NavigationButtons from "../../components/NavigationButton";
 
 function RegisterComponent() {
 
@@ -44,6 +45,7 @@ function RegisterComponent() {
     
     return (
         <div className="page">
+            <NavigationButtons />
             <div className="content">
             <div className="left-column-log">
                     <h1 className="Title">LINKUP <br />
