@@ -10,9 +10,6 @@ const channelSchema = new mongoose.Schema({
         type:String,
         enum:["direct_message", "public"],
     },
-    friends: {
-        type: [String],
-    },
     members: {
         type: [String],
     },
