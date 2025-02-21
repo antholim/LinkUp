@@ -99,4 +99,10 @@ export default class UserService {
     async createToken(payload, secret, expiresIn) {
         return jwt.sign(payload, secret, { expiresIn: expiresIn });
     }
+    async verifyToken(token, secret) {
+        return jwt.verify(token, secret, (err, decoded) => {
+            console.log(decoded)
+            return decoded;
+        });
+    }
 }
