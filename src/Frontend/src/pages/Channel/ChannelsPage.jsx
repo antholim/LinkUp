@@ -7,7 +7,7 @@ const ChannelsPage = () => {
     const [activeChannel, setActiveChannel] = useState('general');
 
     return (
-        <div className="channels-container">
+        <div className="channels-container">/
             <ChannelsSidebar 
                 serverName={"Link Up"}
                 activeChannel={activeChannel}
