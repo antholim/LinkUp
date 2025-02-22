@@ -1,4 +1,4 @@
-import { Channel } from "../models/channel";
+import { Channel } from "../models/channel.js";
 
 export default class ChannelService {
   async createChannel(channelName, creatorID, type = "public") {
