@@ -1,6 +1,8 @@
 import React from 'react';
 import { categories } from '../../../data/FakeChannels';
 import { useState, useRef } from 'react';
+import JoinChannel from './JoinChannel';
+import ModalPortal from '../../../Components/Modal/ModalPortal';
 
 let plus = '+';
 let minus = '-';
@@ -11,6 +13,7 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
         categories[0].channels.push({ id: categories[0].channels.length, name: inputRef.current.value, icon: '#' });
         setCreatingChannel(false);
     }
+    const modal = useRef();
     return (
         <div className="channels-sidebar">
             <div className="server-header">
@@ -18,6 +21,10 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
             </div>
             {categories.map(category => (
                 <div key={category.name}>
+                    <button onClick={()=> {
+                        modal.current.open();
+                    }}>Join channel</button>
+                    <ModalPortal ref={modal} title="Join channel" content= {<JoinChannel/>}/>
                     <div className="channels-category">
                         {category.name}
                         <button className='create-channel-button' onClick={()=> {

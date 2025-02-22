@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema({
+export const messageSchema = new mongoose.Schema({
     channelID:{
         type:String,
         required:[true, "Channel ID is required"]

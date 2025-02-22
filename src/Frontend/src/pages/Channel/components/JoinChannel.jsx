@@ -1,24 +1,25 @@
-import Modal from "../../../Components/Modal/Modal.jsx";
+import { useRef } from "react"
+import { categories } from "../../../data/FakeChannels"
+function JoinChannel() {
 
-function JoinChannel({ showJoinChannel, setShowJoinChannel }) {
-    const handleCreateChannel = () => {
-        console.log('Create channel');
-    };
+    const modalRef = useRef(null)
+    const backdropRef = useRef(null)
+    const handleBackdropClick = (event) => {
+        if (event.target === backdropRef.current) {
+          ref.current.close()
+        }
+      }
     return (
         <>
-        <button onClick={() => {
-            setShowJoinChannel(true)
-            className = "join-channel"
-        }}>Join channel</button>
-            <Modal
-                isOpen={showJoinChannel}
-                onClose={() => setShowJoinChannel(false)}
-                onSubmit={handleCreateChannel}
-                title="Create New Channel"
-                inputLabel="Channel Name"
-                inputPlaceholder="Enter channel name"
-                submitButtonText="Create Channel"
-            />
-        </>
+        <div ref={backdropRef} className="modal-backdrop" onClick={handleBackdropClick}></div>
+        <div ref={modalRef} className="modal" role="dialog" aria-modal="true">
+          <select name="Select a channel" id="Select a channel">
+            {categories[0].channels.map((channel) => {
+                return <option>{channel.name} {channel.icon}</option>
+            })}
+          </select>
+        </div>
+      </>
     )
+
 } export default JoinChannel;
