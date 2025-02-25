@@ -13,7 +13,13 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
         categories[0].channels.push({ id: categories[0].channels.length, name: inputRef.current.value, icon: '#' });
         setCreatingChannel(false);
     }
-    const modal = useRef();
+    const modalRef = useRef();
+    const openModal = () => {
+        modalRef.current?.open()
+      }
+    const closeModal = () => {
+        modalRef.current?.close()
+      }
     return (
         <div className="channels-sidebar">
             <div className="server-header">
@@ -21,10 +27,8 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
             </div>
             {categories.map(category => (
                 <div key={category.name}>
-                    <button onClick={()=> {
-                        modal.current.open();
-                    }}>Join channel</button>
-                    <ModalPortal ref={modal} title="Join channel" content= {<JoinChannel/>}/>
+                    <button onClick={openModal}>Join channel</button>
+                    <ModalPortal ref={modalRef} title="Join channel" content= {<JoinChannel/>} actions={<button onClick={closeModal}>Close</button>}/>
                     <div className="channels-category">
                         {category.name}
                         <button className='create-channel-button' onClick={()=> {

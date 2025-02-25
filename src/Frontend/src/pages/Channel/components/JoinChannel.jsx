@@ -13,7 +13,7 @@ function JoinChannel() {
         <>
         <div ref={backdropRef} className="modal-backdrop" onClick={handleBackdropClick}></div>
         <div ref={modalRef} className="modal" role="dialog" aria-modal="true">
-          <select name="Select a channel" id="Select a channel">
+          <select name="" id="">
             {categories[0].channels.map((channel) => {
                 return <option>{channel.name} {channel.icon}</option>
             })}

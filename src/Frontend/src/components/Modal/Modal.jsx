@@ -5,9 +5,9 @@ const Modal = ({
     isOpen, 
     onClose, 
     onSubmit, 
-    title, 
-    inputLabel, 
-    inputPlaceholder, 
+    title = "Title", 
+    inputLabel = "Label", 
+    inputPlaceholder = "Placeholder", 
     submitButtonText = 'Submit' 
 }) => {
     const [inputValue, setInputValue] = useState('');
