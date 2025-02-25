@@ -1,2 +1,4 @@
 .env
 node_modules
+LINKUP_model1.pth
+test.js

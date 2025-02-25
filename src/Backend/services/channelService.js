@@ -9,4 +9,10 @@ export default class ChannelService {
       messages: [],
     });
   }
+  async getAllChannel() {
+    const channels = await Channel.find({});
+    const channelsNoMessages = channels.map(({_id, channelName, type, members}) => ({_id, channelName, type, members}));
+    console.log(channelsNoMessages)
+    return channelsNoMessages;
+  }
 }
