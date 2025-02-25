@@ -1,18 +1,34 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { categories } from '../../../data/FakeChannels';
 import { useState, useRef } from 'react';
 import JoinChannel from './JoinChannel';
 import ModalPortal from '../../../Components/Modal/ModalPortal';
+import { fetchingService } from '../../../services/fetchingService';
 
 let plus = '+';
 let minus = '-';
 const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
     const [creatingChannel, setCreatingChannel] = useState(false);
+    const [channels, setChannels] = useState([])
     const inputRef = useRef(null);
     const handleCreateChannel = () => {
-        categories[0].channels.push({ id: categories[0].channels.length, name: inputRef.current.value, icon: '#' });
-        setCreatingChannel(false);
+        const fetch = async () => {
+            const data = await fetchingService.post("/create-channel", {
+                accessToken:localStorage.getItem('accessToken'),
+                channelName:inputRef.current.value
+            })
+            setCreatingChannel(false);
+        }
+        fetch();
     }
+    // const stableHandleCreateChannel = useCallback(handleCreateChannel, []);
+    useEffect(()=> {
+        const fetch = async () => {
+            const data = await fetchingService.get("/get-all-channel", localStorage.getItem('accessToken'), null)
+            setChannels(data)
+        }
+        fetch();
+    }, [])
     const modalRef = useRef();
     const openModal = () => {
         modalRef.current?.open()
@@ -36,14 +52,14 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
                         }}>{creatingChannel ? minus : plus}</button>
                     </div>
                     <div className="channel-list">
-                        {category.channels.map(channel => (
+                        {channels.map(channel => (
                             <div
-                                key={channel.id}
-                                className={`channel-item ${activeChannel === channel.name ? 'active' : ''}`}
-                                onClick={() => onChannelSelect(channel.name)}
+                                key={channel._id}
+                                className={`channel-item ${activeChannel === channel.channelName ? 'active' : ''}`}
+                                onClick={() => onChannelSelect(channel.channelName)}
                             >
                                 <span className="channel-icon">{channel.icon}</span>
-                                {channel.name}
+                                # {channel.channelName}
                             </div>
                         ))}
                         

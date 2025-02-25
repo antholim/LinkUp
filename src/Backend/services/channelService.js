@@ -15,4 +15,7 @@ export default class ChannelService {
     console.log(channelsNoMessages)
     return channelsNoMessages;
   }
+  async deleteChannel(channelID) {
+    await Channel.deleteOne({_id : channelID})
+  }
 }
