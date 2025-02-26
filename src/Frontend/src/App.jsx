@@ -43,11 +43,11 @@ function App() {
     },
     {
       path: "/direct-message",
-      element: !isAuthenticated ? <MessagingPage /> : <Navigate to="/login" />,
+      element: isAuthenticated ? <MessagingPage /> : <Navigate to="/login" />,
     },
     {
       path: "/channels",
-      element: !isAuthenticated ? <ChannelsPage /> : <Navigate to="/login" />,
+      element: isAuthenticated ? <ChannelsPage /> : <Navigate to="/login" />,
     },
   ]);
 
