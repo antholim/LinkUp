@@ -16,15 +16,7 @@ export default class UserService {
      */
     async registerUser(email, password, username) {
         const hashedPassword = await bcrypt.hash(password, 10);
-        try {
-            // let existingUser;
-            // existingUser = await User.findOne({ email: email });
-            // if (existingUser) {
-            //     return {
-            //         status: 409,
-            //         message: "User already exists"
-            //     }
-            // }            
+        try {      
             let user = await User.findOne({ $or: [{ email: email }, { username: email }] });
             if (user) {
                 return {
@@ -95,6 +87,13 @@ export default class UserService {
                 message: "Internal server error"
             }
         }
+    }
+    async joinChannel(_id,channelID) {
+        const user = await User.findByIdAndUpdate(
+            _id,
+            { $push: { channels: channelID } },
+            { new: true } // Returns the updated document
+          );
     }
     async createToken(payload, secret, expiresIn) {
         return jwt.sign(payload, secret, { expiresIn: expiresIn });

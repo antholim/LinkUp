@@ -26,6 +26,7 @@ function JoinChannel() {
             return <option>{channel.channelName}</option>
           })}
         </select>
+        <button>Join</button>
       </div>
     </>
   )

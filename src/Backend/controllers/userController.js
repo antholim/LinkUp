@@ -31,6 +31,25 @@ const registerController = () => {
         }
     }
 }
+const joinChannelController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to join channel");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET)
+            const userID = decoded._id;
+            const channelID = req.body.channelID;
+            const response = await userService.joinChannel(userID,channelID)
+            console.log(response);
+            res.status(200).json(response);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
 
-const UserController = {registerController, loginController};
+const UserController = {registerController, loginController, joinChannelController};
 export default UserController;
