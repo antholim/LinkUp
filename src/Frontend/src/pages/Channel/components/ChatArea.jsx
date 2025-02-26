@@ -1,23 +1,27 @@
 import React, { useState } from 'react';
 
-const ChatArea = ({ channel }) => {
+const ChatArea = ({ channel, channels }) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([
-        {
-            id: 1,
-            author: 'John Doe',
-            content: 'Hello everyone!',
-            timestamp: '12:00 PM',
-            avatar: 'JD'
-        },
-        {
-            id: 2,
-            author: 'Jane Smith',
-            content: 'Hi John! How are you?',
-            timestamp: '12:01 PM',
-            avatar: 'JS'
-        }
+
     ]);
+    console.log(channel)
+    // const [messages, setMessages] = useState([
+    //     {
+    //         id: 1,
+    //         author: 'John Doe',
+    //         content: 'Hello everyone!',
+    //         timestamp: '12:00 PM',
+    //         avatar: 'JD'
+    //     },
+    //     {
+    //         id: 2,
+    //         author: 'Jane Smith',
+    //         content: 'Hi John! How are you?',
+    //         timestamp: '12:01 PM',
+    //         avatar: 'JS'
+    //     }
+    // ]);
 
     const handleSendMessage = (e) => {
         e.preventDefault();
@@ -39,7 +43,7 @@ const ChatArea = ({ channel }) => {
         <div className="chat-area">
             <div className="chat-header">
                 <span className="chat-header-icon">#</span>
-                <span className="chat-header-title">{channel}</span>
+                <span className="chat-header-title">{channel.channelName}</span>
             </div>
             
             <div className="messages-container">

@@ -8,9 +8,8 @@ import { fetchingService } from '../../../services/fetchingService';
 
 let plus = '+';
 let minus = '-';
-const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
+const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels }) => {
     const [creatingChannel, setCreatingChannel] = useState(false);
-    const [channels, setChannels] = useState([])
     const inputRef = useRef(null);
     const handleCreateChannel = () => {
         const fetch = async () => {
@@ -32,15 +31,15 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
         fetch();
     }
     // const stableHandleCreateChannel = useCallback(handleCreateChannel, []);
-    useEffect(() => {
-        const fetch = async () => {
-            const data = await fetchingService.get("/get-all-channel", {
-                accessToken: localStorage.getItem('accessToken'),
-            }, null)
-            setChannels(data)
-        }
-        fetch();
-    }, [])
+    // useEffect(() => {
+    //     const fetch = async () => {
+    //         const data = await fetchingService.get("/get-all-channel", {
+    //             accessToken: localStorage.getItem('accessToken'),
+    //         }, null)
+    //         setChannels(data)
+    //     }
+    //     fetch();
+    // }, [])
     const modalRef = useRef();
     const modalDeleteRef = useRef();
     const openModal = () => {
@@ -76,8 +75,8 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
                         {channels.map(channel => (
                             <div
                                 key={channel._id}
-                                className={`channel-item ${activeChannel === channel.channelName ? 'active' : ''}`}
-                                onClick={() => onChannelSelect(channel.channelName)}
+                                className={`channel-item ${activeChannel.channelID === channel._id ? 'active' : ''}`}
+                                onClick={() => onChannelSelect({channelID:channel._id, channelName : channel.channelName})}
                             >
                                 <span className="channel-icon">{channel.icon}</span>
                                 # {channel.channelName}
