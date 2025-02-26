@@ -1,0 +1,115 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    html, body {
+    height: 100%;
+    }
+
+    body {
+    background-color: #f1e0c6;
+    }
+
+    
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0 20px;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    gap: 30px;
+}
+
+
+.right-column-log {
+    width: 50%;
+    height: 100%;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.right-column-log {
+    background-color: white;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.right-column-log button {
+    padding: 15px;
+    width: 100%;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+.right-column-log button:hover {
+    background-color: #e67e22;
+}
+
+
+.right-column-log h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.Title{
+    font-size: 5rem;
+}
+.slogan{
+    font-size: 3rem;
+
+}
+
+.h2Log{
+    font-size: 1.5rem;
+}
+
+/* .textLog{
+    font-size: 1.5rem;
+} */
+
+.input-group {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease;
+    font-family: Arial, sans-serif;
+}
+
+.input-group input::placeholder {
+    color: #aaa;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.5);
+}

@@ -3,7 +3,9 @@ import LoginComponent from "./LoginComponent";
 function LoginPage() {
     return (
         <>
-            <LoginComponent/>
+            <LoginComponent />
         </>
     )
-} export default LoginPage;
+} 
+
+export default LoginPage;
