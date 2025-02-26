@@ -15,6 +15,10 @@ const channelSchema = new mongoose.Schema({
     },
     messages: {
         type:[messageSchema]
+    },
+    isDeleted:{
+        type:Boolean,
+        default:false
     }
 },{ timestamps: true });
 

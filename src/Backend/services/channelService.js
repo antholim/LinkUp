@@ -10,12 +10,18 @@ export default class ChannelService {
     });
   }
   async getAllChannel() {
-    const channels = await Channel.find({});
+    const channels = await Channel.find({ isDeleted: { $ne: true } });
     const channelsNoMessages = channels.map(({_id, channelName, type, members}) => ({_id, channelName, type, members}));
     console.log(channelsNoMessages)
     return channelsNoMessages;
   }
   async deleteChannel(channelID) {
-    await Channel.deleteOne({_id : channelID})
+    try {
+      console.log(channelID)
+      const channel = await Channel.updateOne({_id : channelID},{ $set: { isDeleted: true} })
+      console.log(channel)
+    } catch (error) {
+      console.error(error)
+    }
   }
 }

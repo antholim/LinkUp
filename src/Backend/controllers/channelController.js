@@ -46,10 +46,9 @@ const deleteChannelController = () => {
         try {
             console.log("Trying to get all channels");
             const decoded = await userService.verifyToken(req.body.accessToken, process.env.JWT_SECRET)
-            // const channelName = req.body.channelName;
+            const channelID = req.body.channelID;
             // const creatorID = decoded._id;
-            console.log(decoded)
-            const response = await channelService.getAllChannel();
+            const response = await channelService.deleteChannel(channelID);
             console.log(response);
             res.status(200).json(response);
         } catch (error) {

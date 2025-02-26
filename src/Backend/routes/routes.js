@@ -23,7 +23,7 @@ router.get("/get-all-channel", ChannelController.getAllChannelController())
 //         ]
 //     }
 // ]
-router.delete("/delete-channel", ChannelController.deleteChannelController())
+router.patch("/delete-channel", ChannelController.deleteChannelController())
 
 router.patch("/join-channel", UserController.joinChannelController())
 
