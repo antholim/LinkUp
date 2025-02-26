@@ -18,7 +18,7 @@ function MessagingPage() {
                 messages={messages}
                 setMessages={setMessages}
             />
-        </div>
+        </div>  
     );
 }
 
