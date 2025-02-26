@@ -148,6 +148,30 @@ function HomeComponent() {
                                 Admin and Member roles with different permissions for channel management and content moderation.
                             </p>
                         </div>
+                        <div className="feature-card" style={{ 
+                            padding: "25px", 
+                            borderRadius: "15px", 
+                            background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
+                            boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
+                            border: "1px solid rgba(255, 140, 0, 0.2)"
+                        }}>
+                            <div style={{ 
+                                width: "60px", 
+                                height: "60px", 
+                                borderRadius: "50%", 
+                                background: "rgba(255, 140, 0, 0.1)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginBottom: "20px"
+                            }}>
+                                <span style={{ fontSize: "24px", color: "#FF8C00" }}>🤐</span>
+                            </div>
+                            <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>AI Censoring</h3>
+                            <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
+                            Automated moderation feature that screens and filters sensitive or harmful content using AI-driven algorithms.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 
@@ -188,6 +212,24 @@ function HomeComponent() {
                         className="nav-button"
                     >
                         Logout
+                    </button>
+                    <button
+                        onClick={() => navigate("/direct-message")}
+                        style={{
+                            padding: "14px 28px",
+                            fontSize: "1.1rem",
+                            fontWeight: "600",
+                            color: "white",
+                            backgroundColor: "#FF8C00",
+                            border: "none",
+                            borderRadius: "30px",
+                            cursor: "pointer",
+                            boxShadow: "0 4px 15px rgba(255, 140, 0, 0.3)",
+                            transition: "all 0.3s ease"
+                        }}
+                        className="nav-button"
+                    >
+                        Direct Messaging
                     </button>
                 </div>
             </div>
