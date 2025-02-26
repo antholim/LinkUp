@@ -25,7 +25,7 @@ router.get("/get-all-channel", ChannelController.getAllChannelController())
 // ]
 router.delete("/delete-channel", ChannelController.deleteChannelController())
 
-router.post("/join-channel", UserController.joinChannelController())
+router.patch("/join-channel", UserController.joinChannelController())
 
 
 export default router;

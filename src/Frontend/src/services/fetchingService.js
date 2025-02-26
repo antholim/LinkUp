@@ -11,6 +11,15 @@ class FetchingService {
             console.error(error)
         }
     }
+    async patch(route, body, headers) {
+        try {
+            const apiURL = url.concat(route)
+            const response = await axios.patch(apiURL, body, {headers})
+            return response?.data;
+        } catch (error) {
+            console.error(error)
+        }
+    }
     async post(route, body, headers) {
         try {
             const apiURL = url.concat(route)

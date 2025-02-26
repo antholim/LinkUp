@@ -24,7 +24,9 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect }) => {
     // const stableHandleCreateChannel = useCallback(handleCreateChannel, []);
     useEffect(()=> {
         const fetch = async () => {
-            const data = await fetchingService.get("/get-all-channel", localStorage.getItem('accessToken'), null)
+            const data = await fetchingService.get("/get-all-channel", {
+                accessToken:localStorage.getItem('accessToken'),
+            }, null)
             setChannels(data)
         }
         fetch();
