@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { formatDate } from '../../../utils/utils';
 
 const ChatArea = ({ 
     channel, 
@@ -39,8 +40,8 @@ const ChatArea = ({
                         </div>
                         <div className="message-body">
                             <div className="message-header">
-                                <span className="message-author">{msg?.author}</span>
-                                <span className="message-timestamp">{msg.createdAt}</span>
+                                <span className="message-author">{msg.senderId.username}</span>
+                                <span className="message-timestamp">{formatDate(msg.createdAt)}</span>
                             </div>
                             <div className="message-content">
                                 {msg.content}

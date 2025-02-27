@@ -141,6 +141,7 @@ wss.on('connection', async (ws, req) => {
           const newMessage = await Message.create({
             channelId: data.data.channelId,
             senderId: clientId, // Use authenticated user ID
+            senderUsername:user.username,
             content: data.data.content,
           });
           console.log("MESSAGE CREATED")
@@ -148,6 +149,7 @@ wss.on('connection', async (ws, req) => {
           console.log({
             channelId: data.data.channelId,
             senderId: clientId, // Use authenticated user ID
+            senderUsername:user.username,
             content: data.data.content,
           })
           
