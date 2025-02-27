@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const messageSchema = new Schema({
+export const messageSchema = new Schema({
     channelId: {
       type: Schema.Types.ObjectId,
       ref: 'Channel',

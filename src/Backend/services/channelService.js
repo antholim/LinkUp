@@ -12,7 +12,6 @@ export default class ChannelService {
   async getAllChannel() {
     const channels = await Channel.find({ isDeleted: { $ne: true } });
     const channelsNoMessages = channels.map(({_id, channelName, type, members}) => ({_id, channelName, type, members}));
-    console.log(channelsNoMessages)
     return channelsNoMessages;
   }
   async deleteChannel(channelID) {

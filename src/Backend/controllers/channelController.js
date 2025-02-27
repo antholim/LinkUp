@@ -24,13 +24,10 @@ const createChannelController = () => {
 const getAllChannelController = () => {
     return async function (req, res) {
         try {
-            console.log("Trying to get all channels");
             const decoded = await userService.verifyToken(req.body.accessToken, process.env.JWT_SECRET)
             // const channelName = req.body.channelName;
             // const creatorID = decoded._id;
-            console.log(decoded)
             const response = await channelService.getAllChannel();
-            console.log(response);
             res.status(200).json(response);
         } catch (error) {
             console.error(error);

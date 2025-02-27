@@ -8,7 +8,7 @@ import { fetchingService } from '../../../services/fetchingService';
 
 let plus = '+';
 let minus = '-';
-const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels }) => {
+const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels, sendJSON }) => {
     const [creatingChannel, setCreatingChannel] = useState(false);
     const inputRef = useRef(null);
     const handleCreateChannel = () => {
@@ -29,6 +29,13 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels 
             })
         }
         fetch();
+    }
+    const handleSelectChannel = (ch) => {
+        onChannelSelect(ch)
+        sendJSON('join_channel', {
+            channelId: ch.channelID,
+            accessToken: localStorage.getItem('accessToken')
+        });
     }
     // const stableHandleCreateChannel = useCallback(handleCreateChannel, []);
     // useEffect(() => {
@@ -76,7 +83,7 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels 
                             <div
                                 key={channel._id}
                                 className={`channel-item ${activeChannel.channelID === channel._id ? 'active' : ''}`}
-                                onClick={() => onChannelSelect({channelID:channel._id, channelName : channel.channelName})}
+                                onClick={() => handleSelectChannel({channelID:channel._id, channelName : channel.channelName})}
                             >
                                 <span className="channel-icon">{channel.icon}</span>
                                 # {channel.channelName}
