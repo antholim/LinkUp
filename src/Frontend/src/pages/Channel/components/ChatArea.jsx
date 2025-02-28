@@ -50,12 +50,6 @@ const ChatArea = ({
                     </div>
                 ))}
             </div>
-            <button onClick={
-                ()=> {
-                    console.log(messages[channel.channelID])
-                    console.log(channel.channelID)
-                }
-            }>TEST</button>
             <form onSubmit={handleSendMessage} className="message-input-container">
                 <input
                     type="text"
