@@ -11,7 +11,8 @@ const ChannelsPage = () => {
     const [messages, setMessages] = useState({});
     const [isConnected, setIsConnected] = useState(false);
     const [connectionError, setConnectionError] = useState(null);
-    
+    const [isLoadingMessages, setIsLoadingMessages] = useState(true)
+
     const wsRef = useRef(null);
     const reconnectAttempts = useRef(0);
     const maxReconnectAttempts = 5;
@@ -59,10 +60,10 @@ const ChannelsPage = () => {
                     setIsConnected(true);
                     setConnectionError(null);
                     reconnectAttempts.current = 0;
-                    
+
                     // Authenticate immediately
-                    sendJSON('authenticate', { 
-                        accessToken: localStorage.getItem('accessToken') 
+                    sendJSON('authenticate', {
+                        accessToken: localStorage.getItem('accessToken')
                     });
                 };
 
@@ -81,11 +82,11 @@ const ChannelsPage = () => {
                                 setMessages(prev => {
                                     const channelId = message.data.channelId;
                                     const channelMessages = prev[channelId] || [];
-                                    
+
                                     // Remove optimistic message if it exists
                                     const filteredMessages = channelMessages.filter(
-                                        msg => !msg.isOptimistic || 
-                                        (msg._id !== message.data._id && msg.tempId !== message.data._id)
+                                        msg => !msg.isOptimistic ||
+                                            (msg._id !== message.data._id && msg.tempId !== message.data._id)
                                     );
 
                                     return {
@@ -128,9 +129,9 @@ const ChannelsPage = () => {
                             baseReconnectDelay * Math.pow(2, reconnectAttempts.current),
                             30000
                         );
-                        
+
                         console.log(`Reconnecting in ${delay}ms... (Attempt ${reconnectAttempts.current + 1})`);
-                        
+
                         setTimeout(() => {
                             reconnectAttempts.current += 1;
                             connectWebSocket();
@@ -171,8 +172,8 @@ const ChannelsPage = () => {
 
     return (
         <div className="channels-container">
-            {/* <ChatProvider>            /></ChatProvider> */ }
-                <ChannelsSidebar
+            {/* <ChatProvider>            /></ChatProvider> */}
+            <ChannelsSidebar
                 serverName={"Link Up"}
                 activeChannel={activeChannel}
                 onChannelSelect={setActiveChannel}
@@ -180,7 +181,9 @@ const ChannelsPage = () => {
                 sendJSON={sendJSON}
                 setMessages={setMessages}
                 messages={messages}
+                setIsLoadingMessages={setIsLoadingMessages}
             />
+            {!isLoadingMessages &&
                 <ChatArea
                     channel={activeChannel}
                     channels={channels}
@@ -188,8 +191,8 @@ const ChannelsPage = () => {
                     isConnected={isConnected}
                     connectionError={connectionError}
                     sendJSON={sendJSON}
-                />
-                
+                />}
+
         </div>
     );
 };

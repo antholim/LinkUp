@@ -8,7 +8,7 @@ import { fetchingService } from '../../../services/fetchingService';
 
 let plus = '+';
 let minus = '-';
-const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels, sendJSON, setMessages, messages }) => {
+const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels, sendJSON, setMessages, messages, setIsLoadingMessages }) => {
     const [creatingChannel, setCreatingChannel] = useState(false);
     const inputRef = useRef(null);
     const handleCreateChannel = () => {
@@ -32,36 +32,43 @@ const ChannelsSidebar = ({ serverName, activeChannel, onChannelSelect, channels,
     }
     const handleSelectChannel = (ch) => {
         onChannelSelect(ch)
+        setIsLoadingMessages(()=> true);
         sendJSON('join_channel', {
             channelId: ch.channelID,
             accessToken: localStorage.getItem('accessToken')
         });
         let data;
-        console.log(activeChannel.channelID, "ACTIBER")
+        console.log(ch.channelID, "ACTIBER")
         const fetch = async () => {
-            data = await fetchingService.get("/retrieve-channel-message", {
-                accessToken: localStorage.getItem('accessToken'),
-                channelId: activeChannel.channelID
-            },null)
-            console.log(data)
-            setCreatingChannel(false);
-            console.log(messages)
-            setMessages(prev => {
-                const channelId = activeChannel.channelID;
-                
-                // Check if data is an array
-                const messagesArray = Array.isArray(data) ? data : [data];
-                
-                // Create a new array if this channel doesn't exist in messages yet
-                const currentMessages = prev[channelId] || [];
-                
-                // Combine existing messages with new messages and sort
-                return {
-                    ...prev,
-                    [channelId]: [...messagesArray]
-                        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-                };
-            });
+            try {
+                data = await fetchingService.get("/retrieve-channel-message", {
+                    accessToken: localStorage.getItem('accessToken'),
+                    channelId: ch.channelID
+                },null)
+                console.log(data)
+                setCreatingChannel(false);
+                console.log(messages)
+                setMessages(prev => {
+                    const channelId = ch.channelID;
+                    
+                    // Check if data is an array
+                    const messagesArray = Array.isArray(data) ? data : [data];
+                    
+                    // Create a new array if this channel doesn't exist in messages yet
+                    const currentMessages = prev[channelId] || [];
+                    
+                    // Combine existing messages with new messages and sort
+                    return {
+                        ...prev,
+                        [channelId]: [...messagesArray]
+                            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                    };
+                });
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setIsLoadingMessages(false)
+            }
         }
         fetch();
     }
