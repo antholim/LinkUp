@@ -31,7 +31,7 @@ const ChannelsPage = () => {
         const fetch = async () => {
             const data = await fetchingService.get("/get-all-channel", {
                 accessToken: localStorage.getItem('accessToken'),
-            }, null);
+            });
             setChannels(data);
         };
         fetch();
@@ -178,6 +178,8 @@ const ChannelsPage = () => {
                 onChannelSelect={setActiveChannel}
                 channels={channels}
                 sendJSON={sendJSON}
+                setMessages={setMessages}
+                messages={messages}
             />
                 <ChatArea
                     channel={activeChannel}

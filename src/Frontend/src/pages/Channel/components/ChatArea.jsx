@@ -34,13 +34,13 @@ const ChatArea = ({
 
             <div className="messages-container">
                 {messages[channel?.channelID] && messages[channel.channelID].map(msg => (
-                    <div key={msg.id} className="message">
+                    <div key={msg._id} className="message">
                         <div className="message-avatar">
                             TT
                         </div>
                         <div className="message-body">
                             <div className="message-header">
-                                <span className="message-author">{msg.senderId.username}</span>
+                                <span className="message-author">{msg?.senderUsername}</span>
                                 <span className="message-timestamp">{formatDate(msg.createdAt)}</span>
                             </div>
                             <div className="message-content">

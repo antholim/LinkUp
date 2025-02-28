@@ -14,6 +14,10 @@ export const messageSchema = new Schema({
       required: [true, "Sender ID is required"],
       index: true
     },
+    senderUsername: {
+      type: String,
+      default: ""
+    },
     content: {
       type: String,
       default: ""
