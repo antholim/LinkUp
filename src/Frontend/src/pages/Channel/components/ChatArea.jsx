@@ -1,37 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { formatDate } from '../../../utils/utils';
 
-const ChatArea = ({ channel }) => {
+const ChatArea = ({ 
+    channel, 
+    channels, 
+    messages, 
+    isConnected, 
+    connectionError, 
+    sendJSON 
+}) => {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([
-        {
-            id: 1,
-            author: 'John Doe',
-            content: 'Hello everyone!',
-            timestamp: '12:00 PM',
-            avatar: 'JD'
-        },
-        {
-            id: 2,
-            author: 'Jane Smith',
-            content: 'Hi John! How are you?',
-            timestamp: '12:01 PM',
-            avatar: 'JS'
-        }
-    ]);
-
     const handleSendMessage = (e) => {
         e.preventDefault();
-        if (!message.trim()) return;
+        if (!message.trim() || !isConnected) return;
 
-        const newMessage = {
-            id: messages.length + 1,
-            author: 'Current User',
+        const tempId = `temp-${Date.now()}`;
+        sendJSON('send_message', {
+            channelId: channel.channelID,
             content: message,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            avatar: 'CU'
-        };
+            tempId,
+            accessToken: localStorage.getItem('accessToken')
+        });
 
-        setMessages([...messages, newMessage]);
         setMessage('');
     };
 
@@ -39,19 +29,19 @@ const ChatArea = ({ channel }) => {
         <div className="chat-area">
             <div className="chat-header">
                 <span className="chat-header-icon">#</span>
-                <span className="chat-header-title">{channel}</span>
+                <span className="chat-header-title">{channel.channelName}</span>
             </div>
-            
+
             <div className="messages-container">
-                {messages.map(msg => (
-                    <div key={msg.id} className="message">
+                {messages[channel?.channelID] && messages[channel.channelID].map(msg => (
+                    <div key={msg._id} className="message">
                         <div className="message-avatar">
-                            {msg.avatar}
+                            TT
                         </div>
                         <div className="message-body">
                             <div className="message-header">
-                                <span className="message-author">{msg.author}</span>
-                                <span className="message-timestamp">{msg.timestamp}</span>
+                                <span className="message-author">{msg?.senderUsername}</span>
+                                <span className="message-timestamp">{formatDate(msg.createdAt)}</span>
                             </div>
                             <div className="message-content">
                                 {msg.content}
@@ -60,7 +50,6 @@ const ChatArea = ({ channel }) => {
                     </div>
                 ))}
             </div>
-
             <form onSubmit={handleSendMessage} className="message-input-container">
                 <input
                     type="text"

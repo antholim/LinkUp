@@ -68,9 +68,11 @@ export default class UserService {
                     message: "Invalid Password"
                 }
             } else {
+                console.log(user.username, "USERNAME")
                 const accessToken = await this.createToken({
                     _id: user._id,
                     email: email,
+                    username:user.username,
                     iat: Math.floor(Date.now() / 1000) - 30,
                     permissions: user.subscriptionType
                 }, process.env.JWT_SECRET, '4h');

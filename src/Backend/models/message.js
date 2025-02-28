@@ -1,21 +1,34 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
-export const messageSchema = new mongoose.Schema({
-    channelID:{
-        type:String,
-        required:[true, "Channel ID is required"]
+export const messageSchema = new Schema({
+    channelId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Channel',
+      required: [true, "Channel ID is required"],
+      index: true
     },
-
-    senderID:{
-        type:String,
-        required:[true, "Sender ID is required"]
+    senderId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, "Sender ID is required"],
+      index: true
     },
-
-    content:{
-        type:String,
-        required:[true, "Content is required"]
+    senderUsername: {
+      type: String,
+      default: ""
     },
-},{ timestamps: true });
+    content: {
+      type: String,
+      default: ""
+    },
+    isEdited: {
+      type: Boolean,
+      default: false
+    }
+  }, { 
+    timestamps: true 
+  });
 
 export const Message = mongoose.model("Message", messageSchema, "messages");
 

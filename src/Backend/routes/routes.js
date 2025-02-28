@@ -1,7 +1,7 @@
 import express from "express"
 import UserController from "../controllers/userController.js"
 import ChannelController from "../controllers/channelController.js";
-
+import MessageController from "../controllers/messageController.js";
 const router = express.Router();
 
 router.post("/register", UserController.registerController())
@@ -26,6 +26,6 @@ router.get("/get-all-channel", ChannelController.getAllChannelController())
 router.patch("/delete-channel", ChannelController.deleteChannelController())
 
 router.patch("/join-channel", UserController.joinChannelController())
-
+router.get("/retrieve-channel-message", MessageController.retrieveChannelMessageController())
 
 export default router;
