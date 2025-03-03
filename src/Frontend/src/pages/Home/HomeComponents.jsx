@@ -50,6 +50,7 @@ function HomeComponent() {
                     Connect. Collaborate. Communicate.
                 </h2>
                 
+                
                 <div style={{ 
                     background: "white", 
                     borderRadius: "20px", 
