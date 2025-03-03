@@ -49,6 +49,8 @@ function HomeComponent() {
                 }}>
                     Connect. Collaborate. Communicate.
                 </h2>
+
+
                 
                 
                 <div style={{ 
