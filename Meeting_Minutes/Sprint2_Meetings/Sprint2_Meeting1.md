@@ -2,7 +2,7 @@ Project Name: LinkUp
 
 Sprint: 02
 Meeting Number: 01
-Date: February 21st, 2025
+Date: February 7th, 2025
 Duration: 30min
 Meeting Mode: Online
 Meeting Location: Zoom
