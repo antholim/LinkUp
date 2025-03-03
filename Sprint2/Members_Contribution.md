@@ -24,7 +24,7 @@
 |-------------------------------------------|-------------|----------------------------------------------------|-----------------|
 | Implemented Backend Logic for Message Handling | 5 hours     | Developed message retrieval and sending endpoints  | LINKUP-7.3, LINKUP-7.4 |
 | Created AI Model for Language Censorship  | 6 hours     | Trained AI for detecting inappropriate content     | LINKUP-17.3, LINKUP-17.2 |
-| Integrated AI Model with Backend Services | 3 hours     | Ensured model runs efficiently within backend      | LINKUP-17.1 |
+| Integrated AI Model | 3 hours     |       | LINKUP-17.1 |
 | **Total Contribution Time**               | **14 hours** |                                                    |                 |
 
 ### **Victor Taing - AI Model / GitHub Actions**
