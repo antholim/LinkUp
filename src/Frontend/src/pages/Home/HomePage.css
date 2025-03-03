@@ -1,0 +1,57 @@
+/* HomePage.css - Orange Theme */
+.home-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff8f0;
+  }
+  
+  .feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(255, 140, 0, 0.15) !important;
+  }
+  
+  .nav-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+  }
+  
+  .nav-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(255, 140, 0, 0.3);
+  }
+  
+  /* Pulsing animation for logo */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(255, 140, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 140, 0, 0);
+    }
+  }
+  
+  .logo-container {
+    animation: pulse 2s infinite;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .button-container {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .nav-button {
+      width: 100%;
+    }
+  }

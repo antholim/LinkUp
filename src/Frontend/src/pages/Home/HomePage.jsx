@@ -1,9 +1,12 @@
-import HomeComponent from "./HomeComponents.jsx"
+import HomeComponent from "./HomeComponents.jsx";
+import "./HomePage.css";
+
 function HomePage() {
     return (
-        <>
-            <h1>Home page</h1>
+        <div className="home-container">
             <HomeComponent />
-        </>
-    )
-} export default HomePage;
+        </div>
+    );
+}
+
+export default HomePage;
