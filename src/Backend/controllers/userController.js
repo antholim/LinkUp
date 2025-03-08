@@ -71,5 +71,48 @@ const authenticationController = () => {
     }
 }
 
-const UserController = {registerController, loginController, joinChannelController, authenticationController};
+const getAllFriendsController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to get all friends");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+            if (userID) {
+                const friends = userService.getAllFriends(userID);
+                res.status(200).json(friends);
+            } else {
+                res.status(401).json({message:"Error"});
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
+
+const addFriendController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to add friend");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+            if (userID) {
+                const friends = userService.getAllFriends(userID);
+                res.status(200).json(friends);
+            } else {
+                res.status(401).json({message:"Error"});
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
+const UserController = {registerController, loginController, joinChannelController, authenticationController, getAllFriendsController, addFriendController};
 export default UserController;

@@ -16,7 +16,7 @@ export default class UserService {
      */
     async registerUser(email, password, username) {
         const hashedPassword = await bcrypt.hash(password, 10);
-        try {      
+        try {
             let user = await User.findOne({ $or: [{ email: email }, { username: email }] });
             if (user) {
                 return {
@@ -41,17 +41,17 @@ export default class UserService {
             }
         }
     }
-     /**
-     * Method to login a user
-     * 
-     * @param email 
-     * @param password 
-     * @returns {
-        *   status: number,
-        *   message: string,
-        *   accessToken?: string
-        * }
-    */
+    /**
+    * Method to login a user
+    * 
+    * @param email 
+    * @param password 
+    * @returns {
+       *   status: number,
+       *   message: string,
+       *   accessToken?: string
+       * }
+   */
     async authenticateUser(email, password) {
         try {
             const user = await User.findOne({ $or: [{ email: email }, { username: email }] });
@@ -72,7 +72,7 @@ export default class UserService {
                 const accessToken = await this.createToken({
                     _id: user._id,
                     email: email,
-                    username:user.username,
+                    username: user.username,
                     iat: Math.floor(Date.now() / 1000) - 30,
                     permissions: user.subscriptionType
                 }, process.env.JWT_SECRET, '4h');
@@ -90,12 +90,12 @@ export default class UserService {
             }
         }
     }
-    async joinChannel(_id,channelID) {
+    async joinChannel(_id, channelID) {
         const user = await User.findByIdAndUpdate(
             _id,
             { $push: { channels: channelID } },
             { new: true } // Returns the updated document
-          );
+        );
     }
     async createToken(payload, secret, expiresIn) {
         return jwt.sign(payload, secret, { expiresIn: expiresIn });
@@ -105,5 +105,18 @@ export default class UserService {
             console.log(decoded)
             return decoded;
         });
+    }
+    async addFriend(userId, friendID) {
+        const user = await User.findByIdAndUpdate(
+            _id,
+            { $push: { friends: friendID } },
+            { new: true } // Returns the updated document
+        );
+    }
+    async getAllFriends(_id) {
+        const user = await User.findOne({ _id: _id });
+        const friends = user.friends;
+        console.log(friends)
+        return friends;
     }
 }
