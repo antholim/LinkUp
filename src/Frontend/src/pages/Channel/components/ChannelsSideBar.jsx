@@ -38,6 +38,7 @@ const ChannelsSidebar = ({
                 accessToken: localStorage.getItem('accessToken')
             });
             channels = data;
+            window.location.reload();
         } catch (error) {
             console.error("Error creating channel:", error);
         }
@@ -141,7 +142,9 @@ const ChannelsSidebar = ({
                         <span>{category.name}</span>
                         <button 
                             className="create-channel-button" 
-                            onClick={() => setCreatingChannel(!creatingChannel)}
+                            onClick={() => {
+                                setCreatingChannel(!creatingChannel);
+                            }}
                             title={creatingChannel ? "Cancel" : "Create Channel"}
                         >
                             {creatingChannel ? '-' : '+'}

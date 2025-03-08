@@ -23,11 +23,16 @@ class FetchingService {
             console.error(error)
         }
     }
-    async post(route, body, headers) {
+    async post(route, body, headers, noParse = false) {
         try {
             const apiURL = url.concat(route)
             const response = await axios.post(apiURL, body, {headers})
-            return response?.data;
+            console.log(response)
+            if (noParse) {
+                return response;
+            } else {
+                return response?.data;
+            }
         } catch (error) {
             console.error(error)
         }

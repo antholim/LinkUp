@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/register", UserController.registerController())
 router.post("/login", UserController.loginController())
+router.post("/authenticate", UserController.authenticationController())
 // {
 //     "status": 200,
 //     "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2E1NzRlNmIzM2RhNDc1OTEwNDQzYzciLCJlbWFpbCI6ImFudGhvLmxpbTQ0MUBnbWFpbC5jb20iLCJpYXQiOjE3NDA1MDg0ODYsImV4cCI6MTc0MDUyMjg4Nn0.9BEeHPofAr1BBSKSc3pqdFsnRPdNQI8rbnBKa0xC-2A",
