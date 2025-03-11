@@ -99,9 +99,9 @@ const addFriendController = () => {
             console.log("Trying to add friend");
             const accessToken = req.body.accessToken;
             const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
-            const userID = decoded._id;
-            if (userID) {
-                const friends = userService.getAllFriends(userID);
+            const _id = decoded._id;
+            if (_id) {
+                const friends = userService.addFriend(_id);
                 res.status(200).json(friends);
             } else {
                 res.status(401).json({message:"Error"});

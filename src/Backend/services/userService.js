@@ -106,12 +106,16 @@ export default class UserService {
             return decoded;
         });
     }
-    async addFriend(userId, friendID) {
+    async addFriend(_id, friendID) {
         const user = await User.findByIdAndUpdate(
             _id,
             { $push: { friends: friendID } },
             { new: true } // Returns the updated document
         );
+        return {
+            status: 200,
+            message: "Friend added"
+        }
     }
     async getAllFriends(_id) {
         const user = await User.findOne({ _id: _id });
