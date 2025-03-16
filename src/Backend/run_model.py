@@ -55,7 +55,6 @@ def predict_toxicity(text):
     # """Tokenizes input text, runs inference, and returns multi-label predictions."""
     
     # Tokenize input text
-    print(text)
     threshold = 0.9
     inputs = tokenizer(
         text,

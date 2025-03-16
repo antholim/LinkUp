@@ -26,6 +26,7 @@ import { createRequire } from "module"
 import { WebSocketServer } from 'ws'
 import { Message } from "./models/message.js"
 import { sendJSON, verifyToken } from "./utils.js"
+import { json } from "stream/consumers"
 
 const require = createRequire(import.meta.url);
 const webSocket = http.createServer();
@@ -70,53 +71,68 @@ const heartbeat = (ws) => {
   ws.isAlive = true;
 };
 
-// async function processMessageWithAI(messageContent) {
-//   const inputData = { text: messageContent };
-//   const pythonProcess = spawn("python", ["run_model.py"]);
-
-
-//   // Send input data to Python via stdin
-//   pythonProcess.stdin.write(JSON.stringify(inputData));
-//   pythonProcess.stdin.end(); // Close stdin after sending data
-
-//   // Capture Python output
-//   pythonProcess.stdout.on("data", (data) => {
-//     console.log(`Python Output: ${data.toString()}`);
-//       return data.toString();
-//   });
-// }
-
 async function processMessageWithAI(messageContent) {
+  const inputData = { text: messageContent };
+  const pythonProcess = spawn("python", ["run_model.py"]);
+
+  // Return a Promise to handle asynchronous behavior
   return new Promise((resolve, reject) => {
-    const pythonProcess = spawn("python3", ["./src/Backend/run_model.py"]);
+    // Send input data to Python via stdin
+    pythonProcess.stdin.write(JSON.stringify(inputData));
+    pythonProcess.stdin.end(); // Close stdin after sending data
 
-    pythonProcess.stdin.write(JSON.stringify({ text: messageContent }));
-    pythonProcess.stdin.end();
-
-    let outputData = "";
+    // Capture Python output
     pythonProcess.stdout.on("data", (data) => {
-      outputData += data.toString();
+      console.log(`Python Output: ${data.toString()}`);
+      resolve({
+        predictions: data.toString()
+      });
     });
 
-    pythonProcess.stderr.on("data", (data) => {
-      console.error(`Python Error: ${data.toString()}`);
-      reject(new Error("Python process error"));
+    // Handle errors
+    pythonProcess.stderr.on("data", (error) => {
+      reject(`Error: ${error.toString()}`);
     });
 
     pythonProcess.on("close", (code) => {
       if (code !== 0) {
-        reject(new Error(`Python process exited with code ${code}`));
-      } else {
-        try {
-          const parsedData = JSON.parse(outputData.trim());
-          resolve(parsedData); // Parsed AI analysis result
-        } catch (error) {
-          reject(new Error("Failed to parse Python output"));
-        }
+        reject(`Python process exited with code ${code}`);
       }
     });
   });
 }
+
+// async function processMessageWithAI(messageContent) {
+//   return new Promise((resolve, reject) => {
+//     const pythonProcess = spawn("python3", ["run_model.py"]);
+
+//     pythonProcess.stdin.write(JSON.stringify({ text: messageContent }));
+//     pythonProcess.stdin.end();
+
+//     let outputData = "";
+//     pythonProcess.stdout.on("data", (data) => {
+//       outputData += data.toString();
+//     });
+
+//     pythonProcess.stderr.on("data", (data) => {
+//       console.error(`Python Error: ${data.toString()}`);
+//       reject(new Error("Python process error"));
+//     });
+
+//     pythonProcess.on("close", (code) => {
+//       if (code !== 0) {
+//         reject(new Error(`Python process exited with code ${code}`));
+//       } else {
+//         try {
+//           const parsedData = JSON.parse(outputData.trim());
+//           resolve(parsedData); // Parsed AI analysis result
+//         } catch (error) {
+//           reject(new Error("Failed to parse Python output"));
+//         }
+//       }
+//     });
+//   });
+// }
 
 
 wss.on('connection', async (ws, req) => {
@@ -192,11 +208,12 @@ wss.on('connection', async (ws, req) => {
           }
           
           try{
-            const AImod = await processMessageWithAI(data.data.content);
-            console.log("AI Analysis:", AImod);
+            const AImodRaw = await processMessageWithAI(data.data.content);
+            const AIMod = await JSON.parse(AImodRaw.predictions.trim())
+            console.log("AI Analysis:", AIMod);
 
             //Check if the message falls into any of the 6 harmful categories
-            const isHarmful = Object.values(AImod.predictions).some(
+            const isHarmful = Object.values(AIMod).some(
               (value) => value === 1
             );
 
@@ -217,7 +234,6 @@ wss.on('connection', async (ws, req) => {
             senderId: clientId, // Use authenticated user ID
             senderUsername:user.username,
             content: data.data.content,
-            AImod,
           });
           console.log("MESSAGE CREATED")
           console.log({
