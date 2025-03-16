@@ -1,11 +1,12 @@
+import { createContext, useContext, useEffect, useState } from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import AIPage from "./pages/AI/AIPage";
+import ChannelsPage from "./pages/Channel/ChannelsPage";
+import MessagingPage from "./pages/DirectMessage/MessagingPage";
 import HomePage from './pages/Home/HomePage';
 import LoginPage from './pages/Login/LoginPage';
 import RegisterPage from './pages/Register/RegisterPage';
 import RootPage from './pages/Root/RootPage';
-import MessagingPage from "./pages/DirectMessage/MessagingPage";
-import ChannelsPage from "./pages/Channel/ChannelsPage";
-import { useEffect, useState, createContext, useContext } from "react";
 import { fetchingService } from "./services/fetchingService";
 
 // Create an auth context
@@ -66,6 +67,10 @@ function App() {
     {
       path: "/channels",
       element: isAuthenticated ? <ChannelsPage /> : <Navigate to="/login" />, // Fixed condition
+    },
+    {
+      path: "/AI",
+      element: isAuthenticated ? <AIPage /> : <Navigate to="/login" />, // Fixed condition
     },
   ]);
 
