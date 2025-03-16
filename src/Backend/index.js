@@ -1,6 +1,6 @@
-import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import express from "express"
 import userRoutes from "./routes/routes.js"
 import { connectToMongoDB } from "./utils.js"
 dotenv.config()
@@ -20,11 +20,12 @@ app.listen(PORT, ()=> {
 })
 
 
-import { WebSocketServer } from 'ws';
-import http from 'http';
-import { messageService } from "./serviceInit.js"
-import {sendJSON, verifyToken} from "./utils.js"
+import { spawn } from "child_process"
+import http from 'http'
+import { WebSocketServer } from 'ws'
 import { Message } from "./models/message.js"
+import { sendJSON, verifyToken } from "./utils.js"
+
 const webSocket = http.createServer();
 
 const wss = new WebSocketServer({ server:webSocket });
@@ -46,6 +47,7 @@ const addToChannel = (clientId, channelId) => {
     channelClients.push(clientId);
   }
 };
+
 const broadcastToChannel = (channelId, type, data, excludeClient = null) => {
   console.log("Broadcasting...")
   const channelClients = channels.get(channelId) || [];
@@ -65,6 +67,39 @@ const broadcastToChannel = (channelId, type, data, excludeClient = null) => {
 const heartbeat = (ws) => {
   ws.isAlive = true;
 };
+
+const processMessageWithAI = async (messageContent) => {
+  return new Promise((resolve, reject) => {
+    const pythonProcess = spawn("python3", ["./src/Backend/run_model.py"]);
+
+    pythonProcess.stdin.write(JSON.stringify({ text: messageContent }));
+    pythonProcess.stdin.end();
+
+    let outputData = "";
+    pythonProcess.stdout.on("data", (data) => {
+      outputData += data.toString();
+    });
+
+    pythonProcess.stderr.on("data", (data) => {
+      console.error(`Python Error: ${data.toString()}`);
+      reject(new Error("Python process error"));
+    });
+
+    pythonProcess.on("close", (code) => {
+      if (code !== 0) {
+        reject(new Error(`Python process exited with code ${code}`));
+      } else {
+        try {
+          const parsedData = JSON.parse(outputData);
+          resolve(parsedData);
+        } catch (error) {
+          reject(new Error("Failed to parse Python output"));
+        }
+      }
+    });
+  });
+};
+
 wss.on('connection', async (ws, req) => {
   console.log('New connection established');
   
@@ -137,15 +172,20 @@ wss.on('connection', async (ws, req) => {
             return;
           }
           
+          try{
+          
+          const AImod = await processMessageWithAI(data.data.content);
+          console.log("AI Analysis:", aiAnalysis);
+          
           // Create new message in database
           const newMessage = await Message.create({
             channelId: data.data.channelId,
             senderId: clientId, // Use authenticated user ID
             senderUsername:user.username,
             content: data.data.content,
+            AImod,
           });
           console.log("MESSAGE CREATED")
-          
           console.log({
             channelId: data.data.channelId,
             senderId: clientId, // Use authenticated user ID
@@ -161,39 +201,12 @@ wss.on('connection', async (ws, req) => {
           // Broadcast to everyone in the channel
           console.log(populatedMessage, "populated message")
           broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
-          
-          // If this is a reply, also notify the parent message thread
-          // if (data.parentMessageId) {
-          //   broadcastToChannel(`thread:${data.parentMessageId}`, 'new_reply', populatedMessage);
-          // }
-          
-          // Handle mentions
-          // if (data.mentions && data.mentions.length > 0) {
-          //   data.mentions.forEach(userId => {
-          //     const mentionedClient = clients.get(userId);
-          //     if (mentionedClient) {
-          //       sendJSON(mentionedClient.ws, 'mention', {
-          //         message: populatedMessage,
-          //         channel: data.channelId
-          //       });
-          //     }
-          //   });
-          // }
+
+          }catch(error){
+            console.error("Error processing message with AI:", error);
+          }
           break;
-        
-        // case 'typing':
-        //   if (!clientId) {
-        //     sendJSON(ws, 'error', { message: 'Not authenticated' });
-        //     return;
-        //   }
-          
-        //   // Broadcast typing indicator to channel (except sender)
-        //   broadcastToChannel(data.channelId, 'user_typing', {
-        //     userId: clientId,
-        //     channelId: data.channelId
-        //   }, ws);
-        //   break;
-          
+
         case 'ping':
           sendJSON(ws, 'pong', {});
           return;

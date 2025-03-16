@@ -9,6 +9,7 @@ const inputData = { text: "Hello how are you" };
 // Spawn a Python process
 const pythonProcess = spawn("python", ["run_model.py"]);
 
+
 // Send input data to Python via stdin
 pythonProcess.stdin.write(JSON.stringify(inputData));
 pythonProcess.stdin.end(); // Close stdin after sending data
