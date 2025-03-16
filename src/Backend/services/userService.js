@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { User } from '../models/user.js';
 import jwt from 'jsonwebtoken';
+import { User } from '../models/user.js';
 
 export default class UserService {
     /**
@@ -128,5 +128,18 @@ export default class UserService {
         }));
     
         return friendsDetails;  // Return the array of friend objects
+    }
+
+    static async getUserFilters(userId) {
+        const user = await User.findById(userId);
+        return user?.filters || [];
+    }
+
+    static async updateUserFilters(userId, filters) {
+        return await User.findByIdAndUpdate(
+            userId,
+            { filters },
+            { new: true } // Return the updated document
+        );
     }
 }
