@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fakeUsers } from '../../data/FakeUsers';
+import AddFriends from '../../components/AddFriends';
 
 function UsersList({ onSelectUser }) {
     const [users, setUsers] = useState(fakeUsers);
@@ -30,7 +31,8 @@ function UsersList({ onSelectUser }) {
     return (
         <div className="users-list">
             <div className="users-list-header">
-                <h2>Direct Messages</h2>
+                <h2>Direct Messagess</h2>
+
             </div>
             <div className="users-list-content">
                 {loading ? (

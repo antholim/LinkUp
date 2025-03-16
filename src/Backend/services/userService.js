@@ -124,16 +124,32 @@ export default class UserService {
             message: "Friend added"
         }
     }
+    async findAUser(partialUsername) {
+        try {
+            let users = await User.find({
+                username: { $regex: partialUsername, $options: 'i' }
+            });
+
+            if (users.length === 0) {
+                return { success: false, message: 'No users found', users: [] };
+            }
+            users = users.map(({_id, username}) => ({_id, username}));
+            return { success: true, message: `Found ${users.length} users`, users };
+        } catch (error) {
+            console.error('Error finding users:', error);
+            throw new Error('Error searching for users');
+        }
+    }
     async getAllFriends(_id) {
         const user = await User.findOne({ _id: _id });
         const friendsId = user.friends;
-    
+
         // Use Promise.all to ensure all asynchronous operations are completed
         const friendsDetails = await Promise.all(friendsId.map(async (friendId) => {
             const friend = await User.findOne({ _id: friendId });
             return { username: friend.username, _id: friend._id };  // Return only the name and id
         }));
-    
+
         return friendsDetails;  // Return the array of friend objects
     }
 

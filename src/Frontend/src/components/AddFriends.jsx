@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fakeUsers } from '../data/FakeUsers';
 import '../css/AddFriends.css';
+import { fetchingService } from '../services/fetchingService';
 
 function AddFriends() {
     const [users, setUsers] = useState(fakeUsers);
@@ -25,12 +26,37 @@ function AddFriends() {
         resetModalState();
     };
 
-    const handleSearchFriend = () => {
-        const friends = users.filter(user => 
-            user.username.toLowerCase().includes(friendUsername.toLowerCase())
-        );
-        setPossibleFriends(friends);
-        setSelectedFriend(null); // Reset selection when new search is performed
+    const handleSearchFriend = async () => {
+        try {
+            // Make a POST request to your backend endpoint
+            const response = await fetchingService.post(
+                "/find-matching-user", 
+                { 
+                    accessToken: localStorage.getItem("accessToken"),
+                    partialUsername: friendUsername // Send the search term to the backend
+                },
+                {},
+                true
+            );
+            
+            // Check if the response was successful and contains user data
+            if (response.status === 200) {
+                // Set the returned users from the backend to state
+                console.log(response.data.users)
+                setPossibleFriends(response.data.users);
+            } else {
+                // Handle the case when no users are found or there's an error
+                setPossibleFriends([]);
+                console.log(response?.message || "No matching users found");
+            }
+            
+            // Reset selection when new search is performed
+            setSelectedFriend(null);
+        } catch (error) {
+            console.error("Error searching for friends:", error);
+            setPossibleFriends([]);
+            // Optionally, set an error state or display a notification
+        }
     };
 
     const handleSelectFriend = (friend) => {

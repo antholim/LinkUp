@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ModalPortal from '../../Components/Modal/ModalPortal';
 import { fetchingService } from '../../services/fetchingService';
+import AddFriends from '../../components/AddFriends';
 
 const DirectMessageSidebar = ({
     serverName,
@@ -116,15 +117,7 @@ const DirectMessageSidebar = ({
             <div>
                 <div className="channels-category">
                     <span>Friends list</span>
-                    <button
-                        className="create-channel-button"
-                        onClick={() => {
-                            setCreatingChannel(!creatingChannel);
-                        }}
-                        title={creatingChannel ? "Cancel" : "Create Channel"}
-                    >
-                        {creatingChannel ? '-' : '+'}
-                    </button>
+                    <AddFriends />
                 </div>
 
                 <div className="channel-list">

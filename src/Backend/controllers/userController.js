@@ -158,6 +158,31 @@ const updateUserFiltersController = () => {
     };
 };
 
+const findAUserController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Finding a user...");
+            const accessToken = req.body.accessToken;
+            const partialUsername = req.body.partialUsername;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
 
-const UserController = {registerController, loginController, joinChannelController, authenticationController, getAllFriendsController, addFriendController, getUserFiltersController, updateUserFiltersController};
+            if (!userID) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const matchingUsers = await userService.findAUser(partialUsername);
+            res.status(200).json(matchingUsers);
+            // const updatedUser = await userService.updateUserFilters(userID, newFilters);
+            
+            // res.status(200).json({ message: "Filters updated", filters: updatedUser.filters });
+        } catch (error) {
+            console.error("Error updating user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+};
+
+
+const UserController = {registerController, loginController, joinChannelController, authenticationController, getAllFriendsController, addFriendController, getUserFiltersController, updateUserFiltersController, findAUserController};
 export default UserController;

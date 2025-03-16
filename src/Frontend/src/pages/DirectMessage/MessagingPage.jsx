@@ -72,10 +72,6 @@ const ChannelsPage = () => {
                         const message = JSON.parse(event.data);
                         console.log('Received message:', message);
                         console.log(message.type)
-                        if (message.type == "message_blocked") {
-                            console.log("Message blocked case triggered:", message);
-                            alert(JSON.stringify(message));
-                        }
                         switch (message.type) {
                             case 'authenticated':
                                 console.log('Authentication successful');
