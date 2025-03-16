@@ -1,4 +1,4 @@
-import {userService} from "../serviceInit.js"
+import { userService } from "../serviceInit.js";
 
 const loginController = () => {
     return async function (req, res) {
@@ -114,5 +114,50 @@ const addFriendController = () => {
         }
     }
 }
-const UserController = {registerController, loginController, joinChannelController, authenticationController, getAllFriendsController, addFriendController};
+const getUserFiltersController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Retrieving user filters...");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+
+            if (!userID) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const filters = await userService.getUserFilters(userID);
+            res.status(200).json({ filters });
+        } catch (error) {
+            console.error("Error retrieving user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+};
+
+const updateUserFiltersController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Updating user filters...");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+
+            if (!userID) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const newFilters = req.body.filters || [];
+            const updatedUser = await userService.updateUserFilters(userID, newFilters);
+            
+            res.status(200).json({ message: "Filters updated", filters: updatedUser.filters });
+        } catch (error) {
+            console.error("Error updating user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+};
+
+
+const UserController = {registerController, loginController, joinChannelController, authenticationController, getAllFriendsController, addFriendController, getUserFiltersController, updateUserFiltersController};
 export default UserController;

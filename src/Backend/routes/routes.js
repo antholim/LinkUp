@@ -1,7 +1,7 @@
-import express from "express"
-import UserController from "../controllers/userController.js"
+import express from "express";
 import ChannelController from "../controllers/channelController.js";
 import MessageController from "../controllers/messageController.js";
+import UserController from "../controllers/userController.js";
 const router = express.Router();
 
 router.post("/register", UserController.registerController())
@@ -32,5 +32,9 @@ router.patch("/delete-channel", ChannelController.deleteChannelController())
 
 router.patch("/join-channel", UserController.joinChannelController())
 router.get("/retrieve-channel-message", MessageController.retrieveChannelMessageController())
+
+router.post("/get-user-filters", UserController.getUserFiltersController());
+router.post("/update-user-filters", UserController.updateUserFiltersController());
+
 
 export default router;

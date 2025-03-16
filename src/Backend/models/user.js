@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String
     },
+    filters: { type: [String], default: [] },
 },{ timestamps: true });
 
 export const User = mongoose.model("User", userSchema, "users");
