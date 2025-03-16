@@ -175,7 +175,7 @@ wss.on('connection', async (ws, req) => {
           try{
           
           const AImod = await processMessageWithAI(data.data.content);
-          console.log("AI Analysis:", aiAnalysis);
+          console.log("AI Analysis:", AImod);
           
           // Create new message in database
           const newMessage = await Message.create({
