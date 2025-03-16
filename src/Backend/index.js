@@ -25,7 +25,9 @@ import http from 'http'
 import { WebSocketServer } from 'ws'
 import { Message } from "./models/message.js"
 import { sendJSON, verifyToken } from "./utils.js"
+import { createRequire } from "module";
 
+const require = createRequire(import.meta.url);
 const webSocket = http.createServer();
 
 const wss = new WebSocketServer({ server:webSocket });
@@ -68,37 +70,53 @@ const heartbeat = (ws) => {
   ws.isAlive = true;
 };
 
-const processMessageWithAI = async (messageContent) => {
-  return new Promise((resolve, reject) => {
-    const pythonProcess = spawn("python3", ["./src/Backend/run_model.py"]);
+async function processMessageWithAI(messageContent) {
+  const inputData = { text: messageContent };
+  const pythonProcess = spawn("python", ["run_model.py"]);
 
-    pythonProcess.stdin.write(JSON.stringify({ text: messageContent }));
-    pythonProcess.stdin.end();
 
-    let outputData = "";
-    pythonProcess.stdout.on("data", (data) => {
-      outputData += data.toString();
-    });
+  // Send input data to Python via stdin
+  pythonProcess.stdin.write(JSON.stringify(inputData));
+  pythonProcess.stdin.end(); // Close stdin after sending data
 
-    pythonProcess.stderr.on("data", (data) => {
-      console.error(`Python Error: ${data.toString()}`);
-      reject(new Error("Python process error"));
-    });
-
-    pythonProcess.on("close", (code) => {
-      if (code !== 0) {
-        reject(new Error(`Python process exited with code ${code}`));
-      } else {
-        try {
-          const parsedData = JSON.parse(outputData);
-          resolve(parsedData);
-        } catch (error) {
-          reject(new Error("Failed to parse Python output"));
-        }
-      }
-    });
+  // Capture Python output
+  pythonProcess.stdout.on("data", (data) => {
+    console.log(`Python Output: ${data.toString()}`);
+      return data.toString();
   });
-};
+}
+// const processMessageWithAI = async (messageContent) => {
+//   return new Promise((resolve, reject) => {
+//     const pythonProcess = spawn("python3", ["run_model.py"]);
+
+//     pythonProcess.stdin.write(JSON.stringify({ text: messageContent }));
+//     pythonProcess.stdin.end();
+
+//     let outputData = "";
+//     pythonProcess.stdout.on("data", (data) => {
+//       outputData += data.toString();
+//     });
+//     console.log(outputData)
+
+//     pythonProcess.stderr.on("data", (data) => {
+//       console.error(`Python Error: ${data.toString()}`);
+//       reject(new Error("Python process error"));
+//     });
+
+//     pythonProcess.on("close", (code) => {
+//       if (code !== 0) {
+//         reject(new Error(`Python process exited with code ${code}`));
+//       } else {
+//         try {
+//           const parsedData = JSON.parse(outputData);
+//           resolve(parsedData);
+//         } catch (error) {
+//           reject(new Error("Failed to parse Python output"));
+//         }
+//       }
+//     });
+//   });
+// };
 
 wss.on('connection', async (ws, req) => {
   console.log('New connection established');

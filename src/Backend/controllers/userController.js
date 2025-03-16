@@ -79,7 +79,7 @@ const getAllFriendsController = () => {
             const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
             const userID = decoded._id;
             if (userID) {
-                const friends = userService.getAllFriends(userID);
+                const friends = await userService.getAllFriends(userID);
                 res.status(200).json(friends);
             } else {
                 res.status(401).json({message:"Error"});

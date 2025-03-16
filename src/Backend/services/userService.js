@@ -119,8 +119,14 @@ export default class UserService {
     }
     async getAllFriends(_id) {
         const user = await User.findOne({ _id: _id });
-        const friends = user.friends;
-        console.log(friends)
-        return friends;
+        const friendsId = user.friends;
+    
+        // Use Promise.all to ensure all asynchronous operations are completed
+        const friendsDetails = await Promise.all(friendsId.map(async (friendId) => {
+            const friend = await User.findOne({ _id: friendId });
+            return { username: friend.username, _id: friend._id };  // Return only the name and id
+        }));
+    
+        return friendsDetails;  // Return the array of friend objects
     }
 }
