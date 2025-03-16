@@ -11,7 +11,8 @@ warnings.filterwarnings("ignore", message="TypedStorage is deprecated.")
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 #Macbook
-torch.backends.quantized.engine = 'qnnpack'
+if not os.getenv("IS_WINDOWS"):
+    torch.backends.quantized.engine = 'qnnpack'
 
 
 class MultiLabelClassifier(nn.Module):
@@ -39,7 +40,7 @@ model = MultiLabelClassifier(output_dim).to(device)
 quantized_model = torch.quantization.quantize_dynamic(
     model, {torch.nn.Linear}, dtype=torch.qint8
 )
-quantized_model_path = "/Users/vtaing/Desktop/vscode/LinkUp/src/Backend/model/LINKUP_final.pth"
+quantized_model_path = os.getenv("AI_MODEL_PATH")
 checkpoint = torch.load(quantized_model_path, map_location=device)
 quantized_model.load_state_dict(checkpoint)
 

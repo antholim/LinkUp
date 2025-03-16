@@ -307,19 +307,18 @@ wss.on('connection', async (ws, req) => {
           
           try {
               // 🔹 Get AI Analysis
-              const AImodRaw = await processMessageWithAI(data.data.content);
-              const AIMod = await JSON.parse(AImodRaw.predictions.trim());
+              const AIMod = await processMessageWithAI(data.data.content);
               console.log("AI Analysis:", AIMod);
       
               //Get the user’s active filters (from frontend request)
-              const userFilters = data.data.filters || [];
+              const userFilters = data.data.filters || []; // Add filters here
               console.log("User filters:", userFilters);
       
               //Check if the message triggers any active filters
               const isHarmful = Object.keys(AIMod).some(
-                  (label) => userFilters.includes(label) && AIMod[label] === 1
+                  (label) => userFilters.includes(label) && AIMod[label] == 1
               );
-      
+              console.log(isHarmful, "IS HARMFUL")
               if (isHarmful) {
                   sendJSON(ws, "message_blocked", {
                       message: "Your message may contain harmful content and was not sent.",
