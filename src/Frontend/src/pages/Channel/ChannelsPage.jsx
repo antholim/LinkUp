@@ -96,7 +96,10 @@ const ChannelsPage = () => {
                                     };
                                 });
                                 break;
-
+                            case 'message_blocked':
+                                console.log("Message blocked case triggered:", message);
+                                alert(`${message.data.message}\nBlocked by: ${message.data.blockedBy.join(", ")}`);
+                                break;
                             case 'error':
                                 console.error('WebSocket error:', message.data);
                                 break;

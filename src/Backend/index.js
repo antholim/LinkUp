@@ -26,6 +26,7 @@ import { createRequire } from "module"
 import { WebSocketServer } from 'ws'
 import { Message } from "./models/message.js"
 import { sendJSON, verifyToken } from "./utils.js"
+import { User } from "./models/user.js"
 
 const require = createRequire(import.meta.url);
 const webSocket = http.createServer();
@@ -311,7 +312,9 @@ wss.on('connection', async (ws, req) => {
               console.log("AI Analysis:", AIMod);
       
               //Get the user’s active filters (from frontend request)
-              const userFilters = data.data.filters || []; // Add filters here
+              console.log(clientId, "TAMER")
+              const user = await User.findOne({ _id: clientId })
+              const userFilters = user.filters || []; // Add filters here
               console.log("User filters:", userFilters);
       
               //Check if the message triggers any active filters

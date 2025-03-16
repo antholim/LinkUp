@@ -2,9 +2,10 @@ import AIComponent from "./AIComponent.jsx";
 import "./AIPage.css";
 
 function AIPage() {
+    const accessToken = localStorage.getItem("accessToken")
     return (
         <div className="AI-container">
-            <AIComponent />
+            <AIComponent accessToken={accessToken}/>
         </div>
     );
 }

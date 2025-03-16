@@ -71,7 +71,11 @@ const ChannelsPage = () => {
                     try {
                         const message = JSON.parse(event.data);
                         console.log('Received message:', message);
-
+                        console.log(message.type)
+                        if (message.type == "message_blocked") {
+                            console.log("Message blocked case triggered:", message);
+                            alert(JSON.stringify(message));
+                        }
                         switch (message.type) {
                             case 'authenticated':
                                 console.log('Authentication successful');
@@ -96,11 +100,13 @@ const ChannelsPage = () => {
                                     };
                                 });
                                 break;
-
+                            case 'message_blocked':
+                                console.log("Message blocked case triggered:", message);
+                                alert(JSON.stringify(message));
+                                break;
                             case 'error':
                                 console.error('WebSocket error:', message.data);
                                 break;
-
                             default:
                                 console.log('Unknown message type:', message.type);
                         }
