@@ -9,6 +9,14 @@ export default class ChannelService {
       messages: [],
     });
   }
+  async createPrivateMessageChannel(creatorID, type = "private") {
+    const channel = await Channel.create({
+      channelName: "private_message",
+      type: type,
+      members: [creatorID],
+      messages: [],
+    });
+  }
   async getAllChannel() {
     const channels = await Channel.find({ isDeleted: { $ne: true } });
     const channelsNoMessages = channels.map(({_id, channelName, type, members}) => ({_id, channelName, type, members}));

@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { User } from '../models/user.js';
 import jwt from 'jsonwebtoken';
+import { channelService } from '../serviceInit.js';
 
 export default class UserService {
     /**
@@ -110,6 +111,12 @@ export default class UserService {
         const user = await User.findByIdAndUpdate(
             _id,
             { $push: { friends: friendID } },
+            { new: true } // Returns the updated document
+        );
+        const privateChannel = await channelService.createPrivateMessageChannel(_id);
+        await User.findByIdAndUpdate(
+            _id,
+            { $push: { privateChannels: privateChannel._id } },
             { new: true } // Returns the updated document
         );
         return {

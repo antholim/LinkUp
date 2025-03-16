@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
     channels: {
         type: [String],
     },
+    privateChannels: {
+        type:[String],
+    },
     avatar: {
         type: String
     },
