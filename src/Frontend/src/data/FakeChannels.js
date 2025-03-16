@@ -1,6 +1,6 @@
 export const categories = [
     {
-        name: 'Text Channels',
+        name: 'Tas',
         channels: [
             { id: 1, name: 'general', icon: '#' },
             { id: 2, name: 'announcements', icon: '📢' },

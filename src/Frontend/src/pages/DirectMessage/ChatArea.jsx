@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { formatDate } from '../../../utils/utils';
+import { formatDate } from '../../utils/utils';
 
 const ChatArea = ({ 
     channel, 
@@ -29,7 +29,7 @@ const ChatArea = ({
         <div className="chat-area">
             <div className="chat-header">
                 <span className="chat-header-icon">#</span>
-                <span className="chat-header-title">{channel.channelName}</span>
+                <span className="chat-header-title">{channel.username}</span>
             </div>
 
             <div className="messages-container">
