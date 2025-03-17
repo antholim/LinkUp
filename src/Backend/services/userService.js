@@ -107,13 +107,13 @@ export default class UserService {
             return decoded;
         });
     }
-    async addFriend(_id, friendID) {
+    async addFriend(_id, friendId) {
         const user = await User.findByIdAndUpdate(
             _id,
-            { $push: { friends: friendID } },
+            { $push: { friends: friendId } },
             { new: true } // Returns the updated document
         );
-        const privateChannel = await channelService.createPrivateMessageChannel(_id);
+        const privateChannel = await channelService.createPrivateMessageChannel(_id, friendId);
         await User.findByIdAndUpdate(
             _id,
             { $push: { privateChannels: privateChannel._id } },

@@ -12,6 +12,7 @@ const ChannelsPage = () => {
     const [isConnected, setIsConnected] = useState(false);
     const [connectionError, setConnectionError] = useState(null);
     const [isLoadingMessages, setIsLoadingMessages] = useState(true)
+    const [realChannel, setRealChannel] = useState({})
 
     const wsRef = useRef(null);
     const reconnectAttempts = useRef(0);
@@ -27,7 +28,7 @@ const ChannelsPage = () => {
         ws.send(JSON.stringify({ type, data }));
     }, []);
 
-    // Fetch channels
+    // Fetch friends
     useEffect(() => {
         const fetch = async () => {
             const data = await fetchingService.post("/get-all-friends", {
@@ -184,10 +185,12 @@ const ChannelsPage = () => {
                 setMessages={setMessages}
                 messages={messages}
                 setIsLoadingMessages={setIsLoadingMessages}
+                realChannel={realChannel}
+                setRealChannel={setRealChannel}
             />
             {!isLoadingMessages &&
                 <ChatArea
-                    channel={activeChannel}
+                    channel={realChannel}
                     channels={channels}
                     messages={messages}
                     isConnected={isConnected}

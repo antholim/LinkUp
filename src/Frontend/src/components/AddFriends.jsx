@@ -60,12 +60,34 @@ function AddFriends() {
     };
 
     const handleSelectFriend = (friend) => {
+        console.log()
         setSelectedFriend(friend);
     };
 
-    const handleAddFriendSubmit = () => {
+    const handleAddFriendSubmit = async () => {
         if (selectedFriend) {
             console.log(`Adding friend: ${selectedFriend.username}`);
+            try {
+                const response = await fetchingService.post(
+                    "/add-friend", 
+                    { 
+                        accessToken: localStorage.getItem("accessToken"),
+                        friendId: selectedFriend._id
+                    },
+                    {},
+                    true
+                );
+                console.log(response)
+                // Check if the response was successful and contains user data
+
+                // Reset selection when new search is performed
+                setSelectedFriend(null);
+            } catch (error) {
+                console.error("Error searching for friends:", error);
+                setPossibleFriends([]);
+                // Optionally, set an error state or display a notification
+            }
+            console.log(selectedFriend)
             handleCloseModal();
         }
     };

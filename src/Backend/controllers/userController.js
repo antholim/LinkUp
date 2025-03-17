@@ -97,11 +97,13 @@ const addFriendController = () => {
     return async function (req, res) {
         try {
             console.log("Trying to add friend");
+            console.log(req.body)
             const accessToken = req.body.accessToken;
+            const friendId = req.body.friendId;
             const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
             const _id = decoded._id;
             if (_id) {
-                const friends = userService.addFriend(_id);
+                const friends = userService.addFriend(_id, friendId);
                 res.status(200).json(friends);
             } else {
                 res.status(401).json({message:"Error"});

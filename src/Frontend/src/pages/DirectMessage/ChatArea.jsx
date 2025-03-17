@@ -15,6 +15,13 @@ const ChatArea = ({
         if (!message.trim() || !isConnected) return;
 
         const tempId = `temp-${Date.now()}`;
+        console.log(channel, "ICI")
+        console.log({
+            channelId: channel.channelID,
+            content: message,
+            tempId,
+            accessToken: localStorage.getItem('accessToken')
+        },"TEST")
         sendJSON('send_message', {
             channelId: channel.channelID,
             content: message,

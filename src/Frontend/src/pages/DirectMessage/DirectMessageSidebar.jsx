@@ -12,58 +12,59 @@ const DirectMessageSidebar = ({
     setMessages,
     messages,
     setIsLoadingMessages,
-    isLoading
+    isLoading,
+    realChannel,
+    setRealChannel
 }) => {
     const [creatingChannel, setCreatingChannel] = useState(false);
     const inputRef = useRef(null);
     const modalRef = useRef();
     const modalDeleteRef = useRef();
 
-    const handleCreateChannel = async () => {
-        const channelName = inputRef.current.value.trim();
-        if (!channelName) return;
 
-        try {
-            await fetchingService.post("/create-channel", {
-                accessToken: localStorage.getItem('accessToken'),
-                channelName: channelName
-            });
-            setCreatingChannel(false);
-            inputRef.current.value = '';
-
-            // Refresh channels after creating a new one
-            // const data = await fetchingService.get("/get-all-channel", {
-            //     accessToken: localStorage.getItem('accessToken')
-            // });
-            channels = data;
-            window.location.reload();
-        } catch (error) {
-            console.error("Error creating channel:", error);
-        }
-    };
-
-    const handleSelectChannel = async (ch) => {
-        if (activeChannel._id === ch._id) return;
-        console.log(ch)
-        onChannelSelect(ch);
+    const handleSelectChannel = async (friend) => {
+        if (activeChannel._id === friend._id) return;
+        console.log(friend)
+        onChannelSelect(friend);
         setIsLoadingMessages(true);
 
         sendJSON('join_channel', {
-            channelId: ch._id,
+            channelId: realChannel._id,
             accessToken: localStorage.getItem('accessToken')
         });
-
+        console.log(realChannel._id)
+        
+        try {
+            const response = await fetchingService.post("/get-or-create-dm-channel", {
+                accessToken: localStorage.getItem('accessToken'),
+                friendId:friend._id
+            })
+            const channelId = response._id;
+            console.log({
+                channelID:channelId,
+                username:response.type
+            })
+            setRealChannel({
+                channelID:channelId,
+                username:response.type
+            })
+            console.log(response._id)
+        } catch (error) {
+            console.error("Error fetching messages:", error);
+        } finally {
+            setIsLoadingMessages(false);
+        }
         try {
             const data = await fetchingService.get("/retrieve-channel-message", {
                 accessToken: localStorage.getItem('accessToken'),
-                channelId: ch._id
+                channelId: friend._id
             });
 
             const messagesArray = Array.isArray(data) ? data : (data ? [data] : []);
 
             setMessages(prev => ({
                 ...prev,
-                [ch._id]: messagesArray.sort((a, b) =>
+                [friend._id]: messagesArray.sort((a, b) =>
                     new Date(a.createdAt) - new Date(b.createdAt)
                 )
             }));
@@ -122,32 +123,6 @@ const DirectMessageSidebar = ({
 
                 <div className="channel-list">
                     {renderChannelList()}
-
-                    {creatingChannel && (
-                        <div className="create-channel-form">
-                            <input
-                                ref={inputRef}
-                                className="input-channel"
-                                placeholder="New channel name..."
-                                autoFocus
-                                onKeyPress={(e) => e.key === 'Enter' && handleCreateChannel()}
-                            />
-                            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                                <button
-                                    className="action-button"
-                                    onClick={handleCreateChannel}
-                                >
-                                    Create
-                                </button>
-                                <button
-                                    className="action-button secondary"
-                                    onClick={() => setCreatingChannel(false)}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>

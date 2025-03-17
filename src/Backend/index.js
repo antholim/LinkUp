@@ -308,30 +308,30 @@ wss.on('connection', async (ws, req) => {
           
           try {
               // 🔹 Get AI Analysis
-              const AIMod = await processMessageWithAI(data.data.content);
-              console.log("AI Analysis:", AIMod);
+              // const AIMod = await processMessageWithAI(data.data.content);
+              // console.log("AI Analysis:", AIMod);
       
-              //Get the user’s active filters (from frontend request)
-              console.log(clientId, "TAMER")
-              const user = await User.findOne({ _id: clientId })
-              const userFilters = user.filters || []; // Add filters here
-              console.log("User filters:", userFilters);
+              // //Get the user’s active filters (from frontend request)
+              // console.log(clientId, "TAMER")
+              // const user = await User.findOne({ _id: clientId })
+              // const userFilters = user.filters || []; // Add filters here
+              // console.log("User filters:", userFilters);
       
-              //Check if the message triggers any active filters
-              const isHarmful = Object.keys(AIMod).some(
-                  (label) => userFilters.includes(label) && AIMod[label] == 1
-              );
-              console.log(isHarmful, "IS HARMFUL")
-              if (isHarmful) {
-                  sendJSON(ws, "message_blocked", {
-                      message: "Your message may contain harmful content and was not sent.",
-                      blockedBy: userFilters
-                  });
-                  console.log(
-                      `Blocked message from ${clientId}: "${data.data.content}" based on filters: ${userFilters}`
-                  );
-                  return;
-              }
+              // //Check if the message triggers any active filters
+              // const isHarmful = Object.keys(AIMod).some(
+              //     (label) => userFilters.includes(label) && AIMod[label] == 1
+              // );
+              // console.log(isHarmful, "IS HARMFUL")
+              // if (isHarmful) {
+              //     sendJSON(ws, "message_blocked", {
+              //         message: "Your message may contain harmful content and was not sent.",
+              //         blockedBy: userFilters
+              //     });
+              //     console.log(
+              //         `Blocked message from ${clientId}: "${data.data.content}" based on filters: ${userFilters}`
+              //     );
+              //     return;
+              // }
       
               // 🔹 Save Message with User Filters
               const newMessage = await Message.create({
@@ -339,7 +339,7 @@ wss.on('connection', async (ws, req) => {
                   senderId: clientId,
                   senderUsername: user.username,
                   content: data.data.content,
-                  userFilters
+                  // userFilters
               });
       
               console.log("MESSAGE CREATED:", newMessage);
@@ -351,6 +351,7 @@ wss.on('connection', async (ws, req) => {
       
               // 🔹 Broadcast the message
               console.log(populatedMessage, "populated message");
+              console.log(data.data.channelId, "ABDEL")
               broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
       
           } catch (error) {

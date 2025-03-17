@@ -37,6 +37,7 @@ router.get("/retrieve-channel-message", MessageController.retrieveChannelMessage
 
 router.post("/get-user-filters", UserController.getUserFiltersController());
 router.post("/update-user-filters", UserController.updateUserFiltersController());
+router.post("/get-or-create-dm-channel", ChannelController.getDmChannelController())
 
 
 export default router;
