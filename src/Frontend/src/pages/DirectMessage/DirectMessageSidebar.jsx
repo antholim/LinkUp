@@ -34,37 +34,39 @@ const DirectMessageSidebar = ({
         });
         console.log(realChannel._id)
         
+        let channelId;
         try {
             const response = await fetchingService.post("/get-or-create-dm-channel", {
                 accessToken: localStorage.getItem('accessToken'),
                 friendId:friend._id
             })
-            const channelId = response._id;
+            channelId = response._id;
             console.log({
                 channelID:channelId,
                 username:response.type
             })
-            setRealChannel({
-                channelID:channelId,
-                username:response.type
-            })
+        
             console.log(response._id)
         } catch (error) {
             console.error("Error fetching messages:", error);
         } finally {
             setIsLoadingMessages(false);
+            setRealChannel({
+                channelID:channelId,
+                username:"direct_message"
+            })
         }
         try {
             const data = await fetchingService.get("/retrieve-channel-message", {
                 accessToken: localStorage.getItem('accessToken'),
-                channelId: friend._id
+                channelId: channelId
             });
-
+            console.log(channelId, "TTT")
             const messagesArray = Array.isArray(data) ? data : (data ? [data] : []);
 
             setMessages(prev => ({
                 ...prev,
-                [friend._id]: messagesArray.sort((a, b) =>
+                [channelId]: messagesArray.sort((a, b) =>
                     new Date(a.createdAt) - new Date(b.createdAt)
                 )
             }));
@@ -112,8 +114,6 @@ const DirectMessageSidebar = ({
             <div className="server-header">
                 <span>{serverName}</span>
             </div>
-
-
 
             <div>
                 <div className="channels-category">

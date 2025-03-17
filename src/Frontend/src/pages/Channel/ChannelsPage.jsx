@@ -30,9 +30,10 @@ const ChannelsPage = () => {
     // Fetch channels
     useEffect(() => {
         const fetch = async () => {
-            const data = await fetchingService.get("/get-all-channel", {
+            let data = await fetchingService.get("/get-all-channel", {
                 accessToken: localStorage.getItem('accessToken'),
             });
+            data = data.filter(channel => channel.type !== "direct_message");
             setChannels(data);
         };
         fetch();
