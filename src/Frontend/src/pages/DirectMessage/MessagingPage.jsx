@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import ChannelsSidebar from './components/ChannelsSidebar';
-import ChatArea from './components/ChatArea';
+import DirectMessageSidebar from './DirectMessageSidebar';
+import ChatArea from './ChatArea';
 import './ChannelsPage.css';
 import { fetchingService } from '../../services/fetchingService';
 // import { ChatProvider } from './components/ChatContext';
@@ -12,6 +12,7 @@ const ChannelsPage = () => {
     const [isConnected, setIsConnected] = useState(false);
     const [connectionError, setConnectionError] = useState(null);
     const [isLoadingMessages, setIsLoadingMessages] = useState(true)
+    const [realChannel, setRealChannel] = useState({})
 
     const wsRef = useRef(null);
     const reconnectAttempts = useRef(0);
@@ -27,13 +28,12 @@ const ChannelsPage = () => {
         ws.send(JSON.stringify({ type, data }));
     }, []);
 
-    // Fetch channels
+    // Fetch friends
     useEffect(() => {
         const fetch = async () => {
-            let data = await fetchingService.get("/get-all-channel", {
+            const data = await fetchingService.post("/get-all-friends", {
                 accessToken: localStorage.getItem('accessToken'),
             });
-            data = data.filter(channel => channel.type !== "direct_message");
             setChannels(data);
         };
         fetch();
@@ -72,7 +72,7 @@ const ChannelsPage = () => {
                     try {
                         const message = JSON.parse(event.data);
                         console.log('Received message:', message);
-
+                        console.log(message.type)
                         switch (message.type) {
                             case 'authenticated':
                                 console.log('Authentication successful');
@@ -99,12 +99,11 @@ const ChannelsPage = () => {
                                 break;
                             case 'message_blocked':
                                 console.log("Message blocked case triggered:", message);
-                                alert(`${message.data.message}\nBlocked by: ${message.data.blockedBy.join(", ")}`);
+                                alert(JSON.stringify(message));
                                 break;
                             case 'error':
                                 console.error('WebSocket error:', message.data);
                                 break;
-
                             default:
                                 console.log('Unknown message type:', message.type);
                         }
@@ -177,8 +176,8 @@ const ChannelsPage = () => {
     return (
         <div className="channels-container">
             {/* <ChatProvider>            /></ChatProvider> */}
-            <ChannelsSidebar
-                serverName={"Link Up"}
+            <DirectMessageSidebar
+                serverName={"Direct messages"}
                 activeChannel={activeChannel}
                 onChannelSelect={setActiveChannel}
                 channels={channels}
@@ -186,10 +185,12 @@ const ChannelsPage = () => {
                 setMessages={setMessages}
                 messages={messages}
                 setIsLoadingMessages={setIsLoadingMessages}
+                realChannel={realChannel}
+                setRealChannel={setRealChannel}
             />
             {!isLoadingMessages &&
                 <ChatArea
-                    channel={activeChannel}
+                    channel={realChannel}
                     channels={channels}
                     messages={messages}
                     isConnected={isConnected}

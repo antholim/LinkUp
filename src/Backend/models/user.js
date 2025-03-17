@@ -20,9 +20,13 @@ const userSchema = new mongoose.Schema({
     channels: {
         type: [String],
     },
+    privateChannels: {
+        type:[String],
+    },
     avatar: {
         type: String
     },
+    filters: { type: [String], default: [] },
 },{ timestamps: true });
 
 export const User = mongoose.model("User", userSchema, "users");

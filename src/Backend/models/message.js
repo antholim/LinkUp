@@ -25,6 +25,11 @@ export const messageSchema = new Schema({
     isEdited: {
       type: Boolean,
       default: false
+    },
+
+    userFilter: {
+      type: [String],
+      default: []
     }
   }, { 
     timestamps: true 

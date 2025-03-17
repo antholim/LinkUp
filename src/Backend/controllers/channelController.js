@@ -58,6 +58,22 @@ const deleteChannelController = () => {
         }
     }
 }
+const getDmChannelController = () => {
+    return async function (req, res) {
+        try {
+            const decoded = await userService.verifyToken(req.body.accessToken, process.env.JWT_SECRET)
+            const _id = decoded._id;
+            const {friendId} = req.body;
+            const response = await channelService.getDmChannel(_id, friendId);
+            res.status(200).json(response);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
 
-const ChannelController = {createChannelController, getAllChannelController, deleteChannelController};
+const ChannelController = {createChannelController, getAllChannelController, deleteChannelController, getDmChannelController};
 export default ChannelController;

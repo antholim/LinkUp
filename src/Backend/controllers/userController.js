@@ -1,4 +1,4 @@
-import {userService} from "../serviceInit.js"
+import { userService } from "../serviceInit.js";
 
 const loginController = () => {
     return async function (req, res) {
@@ -50,6 +50,141 @@ const joinChannelController = () => {
         }
     }
 }
+const authenticationController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to authenticate");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+            if (userID) {
+                res.status(200).json({message:"Success"});
+            } else {
+                res.status(401).json({message:"Error"});
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
 
-const UserController = {registerController, loginController, joinChannelController};
+const getAllFriendsController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to get all friends");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+            if (userID) {
+                const friends = await userService.getAllFriends(userID);
+                res.status(200).json(friends);
+            } else {
+                res.status(401).json({message:"Error"});
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
+
+const addFriendController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to add friend");
+            console.log(req.body)
+            const accessToken = req.body.accessToken;
+            const friendId = req.body.friendId;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const _id = decoded._id;
+            if (_id) {
+                const friends = userService.addFriend(_id, friendId);
+                res.status(200).json(friends);
+            } else {
+                res.status(401).json({message:"Error"});
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Internal server error"
+            });
+        }
+    }
+}
+const getUserFiltersController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Retrieving user filters...");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+
+            if (!userID) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const filters = await userService.getUserFilters(userID);
+            res.status(200).json({ filters });
+        } catch (error) {
+            console.error("Error retrieving user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+};
+
+const updateUserFiltersController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Updating user filters...");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+
+            if (!userID) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const newFilters = req.body.filters || [];
+            const updatedUser = await userService.updateUserFilters(userID, newFilters);
+            
+            res.status(200).json({ message: "Filters updated", filters: updatedUser.filters });
+        } catch (error) {
+            console.error("Error updating user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+};
+
+const findAUserController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Finding a user...");
+            const accessToken = req.body.accessToken;
+            const partialUsername = req.body.partialUsername;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userID = decoded._id;
+
+            if (!userID) {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const matchingUsers = await userService.findAUser(partialUsername);
+            res.status(200).json(matchingUsers);
+            // const updatedUser = await userService.updateUserFilters(userID, newFilters);
+            
+            // res.status(200).json({ message: "Filters updated", filters: updatedUser.filters });
+        } catch (error) {
+            console.error("Error updating user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+};
+
+
+const UserController = {registerController, loginController, joinChannelController, authenticationController, getAllFriendsController, addFriendController, getUserFiltersController, updateUserFiltersController, findAUserController};
 export default UserController;

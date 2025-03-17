@@ -1,4 +1,5 @@
 import { Channel } from "../models/channel.js";
+import { User } from "../models/user.js";
 
 export default class ChannelService {
   async createChannel(channelName, creatorID, type = "public") {
@@ -8,6 +9,15 @@ export default class ChannelService {
       members: [creatorID],
       messages: [],
     });
+  }
+  async createPrivateMessageChannel(creatorID, friendId, type = "direct_message") {
+    const channel = await Channel.create({
+      channelName: "direct_message",
+      type: type,
+      members: [creatorID, friendId],
+      messages: [],
+    });
+    return channel;
   }
   async getAllChannel() {
     const channels = await Channel.find({ isDeleted: { $ne: true } });
@@ -22,5 +32,19 @@ export default class ChannelService {
     } catch (error) {
       console.error(error)
     }
+  }
+  async getDmChannel(currentUserId, friendId) {
+    const [currentUser, friend] = await Promise.all([
+      User.findById(currentUserId),
+      User.findById(friendId)
+    ]);
+    if (!currentUser || !friend) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    let channel = await Channel.findOne({
+      type: "direct_message",
+      members: { $all: [currentUserId, friendId], $size: 2 }
+    });
+    return channel;
   }
 }
