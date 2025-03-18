@@ -1,15 +1,24 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { formatDate } from '../../utils/utils';
 
-const ChatArea = ({ 
-    channel, 
-    channels, 
-    messages, 
-    isConnected, 
-    connectionError, 
-    sendJSON 
+const ChatArea = ({
+    channel,
+    channels,
+    messages,
+    isConnected,
+    connectionError,
+    sendJSON
 }) => {
     const [message, setMessage] = useState('');
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({});
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (!message.trim() || !isConnected) return;
@@ -21,7 +30,7 @@ const ChatArea = ({
             content: message,
             tempId,
             accessToken: localStorage.getItem('accessToken')
-        },"TEST")
+        }, "TEST")
         sendJSON('send_message', {
             channelId: channel.channelID,
             content: message,

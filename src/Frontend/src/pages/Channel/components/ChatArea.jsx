@@ -10,6 +10,16 @@ const ChatArea = ({
     sendJSON 
 }) => {
     const [message, setMessage] = useState('');
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({  });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (!message.trim() || !isConnected) return;
@@ -49,6 +59,7 @@ const ChatArea = ({
                         </div>
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSendMessage} className="message-input-container">
                 <input
