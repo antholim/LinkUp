@@ -3,6 +3,7 @@ import ChannelsSidebar from './components/ChannelsSidebar';
 import ChatArea from './components/ChatArea';
 import './ChannelsPage.css';
 import { fetchingService } from '../../services/fetchingService';
+import NavigationSidebar from '../../components/NavigationSidebar/NavigationSidebar';
 // import { ChatProvider } from './components/ChatContext';
 
 const ChannelsPage = () => {
@@ -176,7 +177,9 @@ const ChannelsPage = () => {
 
     return (
         <div className="channels-container">
-            {/* <ChatProvider>            /></ChatProvider> */}
+            <NavigationSidebar 
+                activeItem="messages"
+            />
             <ChannelsSidebar
                 serverName={"Link Up"}
                 activeChannel={activeChannel}

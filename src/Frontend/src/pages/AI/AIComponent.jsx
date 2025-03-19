@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { fetchUserFilters, updateUserFilters } from "../../services/filterService";
 import "./AIPage.css";
@@ -59,10 +58,6 @@ const AIComponent = ({ accessToken }) => {
             </button>
         </div>
     );
-};
-
-AIComponent.propTypes = {
-    accessToken: PropTypes.string.isRequired,
 };
 
 export default AIComponent;

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import NavigationSidebar from '../../components/NavigationSidebar/NavigationSidebar';
 import DirectMessageSidebar from './DirectMessageSidebar';
 import ChatArea from './ChatArea';
 import './ChannelsPage.css';
 import { fetchingService } from '../../services/fetchingService';
 // import { ChatProvider } from './components/ChatContext';
-
 const ChannelsPage = () => {
     const [activeChannel, setActiveChannel] = useState({});
     const [channels, setChannels] = useState([]);
@@ -173,9 +173,12 @@ const ChannelsPage = () => {
     //     return () => clearInterval(pingInterval);
     // }, [isConnected, sendJSON]);
 
+
     return (
         <div className="channels-container">
-            {/* <ChatProvider>            /></ChatProvider> */}
+            <NavigationSidebar 
+                activeItem="friends"
+            />
             <DirectMessageSidebar
                 serverName={"Direct messages"}
                 activeChannel={activeChannel}
@@ -197,7 +200,6 @@ const ChannelsPage = () => {
                     connectionError={connectionError}
                     sendJSON={sendJSON}
                 />}
-
         </div>
     );
 };
