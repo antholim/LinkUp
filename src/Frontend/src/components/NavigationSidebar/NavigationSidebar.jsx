@@ -5,7 +5,7 @@ const navItems = [
     { id: 'home', label: 'Home', icon: 'fas fa-comments', href: '/home' },
     { id: 'messages', label: 'Channels', icon: 'fas fa-comments', href: '/channels' },
     { id: 'friends', label: 'Friends', icon: 'fas fa-users', href: '/direct-message' },
-    { id: 'settings', label: 'Settings', icon: 'fas fa-cog', href: '/settings' }
+    { id: 'settings', label: 'Settings', icon: 'fas fa-cog', href: '/AI' }
 ];
 const NavigationSidebar = ({ 
     activeItem = '', 
