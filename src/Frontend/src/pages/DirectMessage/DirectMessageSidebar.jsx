@@ -24,46 +24,40 @@ const DirectMessageSidebar = ({
 
     const handleSelectChannel = async (friend) => {
         if (activeChannel._id === friend._id) return;
-        console.log(friend)
-        onChannelSelect(friend);
         setIsLoadingMessages(true);
-
-        sendJSON('join_channel', {
-            channelId: realChannel._id,
-            accessToken: localStorage.getItem('accessToken')
-        });
-        console.log(realChannel._id)
-        
+    
         let channelId;
+        let channelData;
         try {
             const response = await fetchingService.post("/get-or-create-dm-channel", {
                 accessToken: localStorage.getItem('accessToken'),
-                friendId:friend._id
-            })
+                friendId: friend._id
+            });
+    
             channelId = response._id;
-            console.log({
-                channelID:channelId,
-                username:response.type
-            })
-        
-            console.log(response._id)
-        } catch (error) {
-            console.error("Error fetching messages:", error);
-        } finally {
-            setIsLoadingMessages(false);
-            setRealChannel({
-                channelID:channelId,
-                username:"direct_message"
-            })
-        }
-        try {
+            channelData = {
+                channelID: response._id,
+                username: friend.username 
+            };
+    
+            console.log("Resolved Channel Data:", channelData);
+    
+            setRealChannel(channelData);
+            onChannelSelect(channelData);
+    
+            localStorage.setItem("lastVisitedChannelID", channelId);
+    
+            sendJSON('join_channel', {
+                channelId: channelId,
+                accessToken: localStorage.getItem('accessToken')
+            });
+    
             const data = await fetchingService.get("/retrieve-channel-message", {
                 accessToken: localStorage.getItem('accessToken'),
                 channelId: channelId
             });
-            console.log(channelId, "TTT")
+    
             const messagesArray = Array.isArray(data) ? data : (data ? [data] : []);
-
             setMessages(prev => ({
                 ...prev,
                 [channelId]: messagesArray.sort((a, b) =>
@@ -71,11 +65,12 @@ const DirectMessageSidebar = ({
                 )
             }));
         } catch (error) {
-            console.error("Error fetching messages:", error);
+            console.error("Error fetching channel or messages:", error);
         } finally {
             setIsLoadingMessages(false);
         }
     };
+    
 
     const openModal = () => modalRef.current?.open();
     const closeModal = () => modalRef.current?.close();

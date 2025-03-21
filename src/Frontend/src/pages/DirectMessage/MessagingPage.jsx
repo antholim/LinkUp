@@ -4,7 +4,7 @@ import DirectMessageSidebar from './DirectMessageSidebar';
 import ChatArea from './ChatArea';
 import './ChannelsPage.css';
 import { fetchingService } from '../../services/fetchingService';
-// import { ChatProvider } from './components/ChatContext';
+
 const ChannelsPage = () => {
     const [activeChannel, setActiveChannel] = useState({});
     const [channels, setChannels] = useState([]);
@@ -13,6 +13,8 @@ const ChannelsPage = () => {
     const [connectionError, setConnectionError] = useState(null);
     const [isLoadingMessages, setIsLoadingMessages] = useState(true)
     const [realChannel, setRealChannel] = useState({})
+    
+    const initialLoadAttempted = useRef(false);
 
     const wsRef = useRef(null);
     const reconnectAttempts = useRef(0);
@@ -28,18 +30,74 @@ const ChannelsPage = () => {
         ws.send(JSON.stringify({ type, data }));
     }, []);
 
-    // Fetch friends
     useEffect(() => {
-        const fetch = async () => {
-            const data = await fetchingService.post("/get-all-friends", {
-                accessToken: localStorage.getItem('accessToken'),
-            });
-            setChannels(data);
+        const fetchFriendsAndRestoreChannel = async () => {
+            try {
+                const friends = await fetchingService.post("/get-all-friends", {
+                    accessToken: localStorage.getItem("accessToken"),
+                });
+    
+                console.log("Friends loaded:", friends);
+                setChannels(friends);
+    
+                const lastChannelID = localStorage.getItem("lastVisitedChannelID");
+                console.log("Last visited channel ID:", lastChannelID);
+    
+                if (!lastChannelID || friends.length === 0) return;
+    
+                for (const friend of friends) {
+                    try {
+                        const response = await fetchingService.post("/get-or-create-dm-channel", {
+                            accessToken: localStorage.getItem("accessToken"),
+                            friendId: friend._id,
+                        });
+    
+                        console.log(`Channel for ${friend.username}:`, response);
+    
+                        if (response._id === lastChannelID) {
+                            const resolvedChannel = {
+                                channelID: response._id,
+                                username: friend.username,
+                            };
+    
+                            console.log("Restoring last visited channel:", resolvedChannel);
+    
+                            setActiveChannel(resolvedChannel);
+                            setRealChannel(resolvedChannel);
+    
+                            try {
+                                const data = await fetchingService.get("/retrieve-channel-message", {
+                                    accessToken: localStorage.getItem("accessToken"),
+                                    channelId: response._id,
+                                });
+    
+                                const messagesArray = Array.isArray(data) ? data : (data ? [data] : []);
+                                setMessages(prev => ({
+                                    ...prev,
+                                    [response._id]: messagesArray.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
+                                }));
+                            } catch (err) {
+                                console.error("Error loading messages for restored channel:", err);
+                            }
+    
+                            break; 
+                        }
+                    } catch (error) {
+                        console.error("Error resolving DM channel for", friend.username, error);
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching friends:", error);
+            } finally {
+                setIsLoadingMessages(false);
+            }
         };
-        fetch();
+    
+        fetchFriendsAndRestoreChannel();
     }, []);
+    
 
-    // WebSocket connection
+    // WebSocket connection (unchanged)
     useEffect(() => {
         const token = localStorage.getItem("accessToken");
         console.log(channels)
@@ -160,20 +218,6 @@ const ChannelsPage = () => {
         };
     }, [sendJSON]);
 
-    // Heartbeat
-    // useEffect(() => {
-    //     if (!isConnected) return;
-
-    //     const pingInterval = setInterval(() => {
-    //         if (wsRef.current?.readyState === WebSocket.OPEN) {
-    //             sendJSON('ping', {});
-    //         }
-    //     }, 30000);
-
-    //     return () => clearInterval(pingInterval);
-    // }, [isConnected, sendJSON]);
-
-
     return (
         <div className="channels-container">
             <NavigationSidebar 
@@ -182,7 +226,13 @@ const ChannelsPage = () => {
             <DirectMessageSidebar
                 serverName={"Direct messages"}
                 activeChannel={activeChannel}
-                onChannelSelect={setActiveChannel}
+                onChannelSelect={(selectedChannel) => {
+                    setActiveChannel(selectedChannel);
+                    setRealChannel(selectedChannel);
+                    if (selectedChannel?.channelID) {
+                        localStorage.setItem('lastVisitedChannelID', selectedChannel.channelID);
+                    }
+                }}
                 channels={channels}
                 sendJSON={sendJSON}
                 setMessages={setMessages}
@@ -199,6 +249,7 @@ const ChannelsPage = () => {
                     isConnected={isConnected}
                     connectionError={connectionError}
                     sendJSON={sendJSON}
+                    setRealChannel={setRealChannel} 
                 />}
         </div>
     );
