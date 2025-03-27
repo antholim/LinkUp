@@ -82,6 +82,7 @@ function AddFriends() {
 
                 // Reset selection when new search is performed
                 setSelectedFriend(null);
+                window.location.reload();
             } catch (error) {
                 console.error("Error searching for friends:", error);
                 setPossibleFriends([]);
