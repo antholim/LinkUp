@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post("/register", UserController.registerController())
 router.post("/login", UserController.loginController())
+router.get("/get-role", UserController.userRoleController())
+
 router.post("/authenticate", UserController.authenticationController())
 router.post("/get-all-friends", UserController.getAllFriendsController())
 router.post("/find-matching-user", UserController.findAUserController())
