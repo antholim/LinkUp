@@ -7,16 +7,23 @@ const navItems = [
     { id: 'friends', label: 'Friends', icon: 'fas fa-users', href: '/direct-message' },
     { id: 'settings', label: 'Settings', icon: 'fas fa-cog', href: '/AI' }
 ];
+
 const NavigationSidebar = ({ 
     activeItem = '', 
     onNavItemClick,
-    logo 
+    onLogoClick
 }) => {
     return (
         <div className="navigation-sidebar">
-            <div className="nav-logo">
-                {logo || <span>Logo</span>}
-            </div>
+            <a 
+                href="/home" 
+                className="nav-logo"
+                onClick={(e) => {
+                    onLogoClick?.();
+                }}
+            >
+                <span style={{ color: "white", fontSize: "24px", fontWeight: "bold" }}>L</span>
+            </a>
             <nav className="nav-links">
                 {navItems.map((item) => (
                     <a
@@ -39,4 +46,4 @@ const NavigationSidebar = ({
     );
 };
 
-export default NavigationSidebar; 
+export default NavigationSidebar;
