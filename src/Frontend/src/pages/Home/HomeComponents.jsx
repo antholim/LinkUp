@@ -72,24 +72,6 @@ function HomeComponent() {
                         </button>
 
                         <button
-                            onClick={handleLogout}
-                            style={{
-                                padding: "14px 28px",
-                                fontSize: "1.1rem",
-                                fontWeight: "600",
-                                color: "#FF8C00",
-                                backgroundColor: "white",
-                                border: "1px solid #FF8C00",
-                                borderRadius: "30px",
-                                cursor: "pointer",
-                                boxShadow: "0 4px 15px rgba(255, 140, 0, 0.1)",
-                                transition: "all 0.3s ease"
-                            }}
-                            className="nav-button"
-                        >
-                            Logout
-                        </button>
-                        <button
                             onClick={() => navigate("/direct-message")}
                             style={{
                                 padding: "14px 28px",
@@ -272,6 +254,24 @@ function HomeComponent() {
                                 </p>
                             </div>
                         </div>
+                        <button
+                            onClick={handleLogout}
+                            style={{
+                                padding: "14px 28px",
+                                fontSize: "1.1rem",
+                                fontWeight: "600",
+                                color: "#FF8C00",
+                                backgroundColor: "white",
+                                border: "1px solid #FF8C00",
+                                borderRadius: "30px",
+                                cursor: "pointer",
+                                boxShadow: "0 4px 15px rgba(255, 140, 0, 0.1)",
+                                transition: "all 0.3s ease"
+                            }}
+                            className="nav-button"
+                        >
+                            Logout
+                        </button>
                     </div>
                 </div>
             </div>
