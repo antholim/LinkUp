@@ -67,7 +67,7 @@ const ChatArea = ({
                     className="message-input"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder={`Message #${channel}`}
+                    placeholder={`Message in #${channel?.channelName || ''}`}
                 />
                 <button type="submit" className="send-button">
                     Send
