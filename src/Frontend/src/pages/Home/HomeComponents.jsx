@@ -51,133 +51,6 @@ function HomeComponent() {
                     </h2>
 
 
-
-
-                    <div style={{
-                        background: "white",
-                        borderRadius: "20px",
-                        padding: "40px",
-                        boxShadow: "0 10px 30px rgba(255, 140, 0, 0.1)",
-                        marginBottom: "40px"
-                    }}>
-                        <p style={{
-                            fontSize: "1.2rem",
-                            lineHeight: "1.8",
-                            color: "#555",
-                            marginBottom: "30px",
-                            textAlign: "center"
-                        }}>
-                            A versatile communication platform designed for seamless interaction through text channels and direct messaging.
-                            Create your digital space where ideas flow freely and collaboration thrives.
-                        </p>
-
-                        <div style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                            gap: "25px",
-                            marginBottom: "40px"
-                        }}>
-                            <div className="feature-card" style={{
-                                padding: "25px",
-                                borderRadius: "15px",
-                                background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
-                                boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
-                                border: "1px solid rgba(255, 140, 0, 0.2)"
-                            }}>
-                                <div style={{
-                                    width: "60px",
-                                    height: "60px",
-                                    borderRadius: "50%",
-                                    background: "rgba(255, 140, 0, 0.1)",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "20px"
-                                }}>
-                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>📢</span>
-                                </div>
-                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>Text Channels</h3>
-                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
-                                    Join topic-specific channels like "General," "Project Help," and "Social" to engage in organized group discussions.
-                                </p>
-                            </div>
-
-                            <div className="feature-card" style={{
-                                padding: "25px",
-                                borderRadius: "15px",
-                                background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
-                                boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
-                                border: "1px solid rgba(255, 140, 0, 0.2)"
-                            }}>
-                                <div style={{
-                                    width: "60px",
-                                    height: "60px",
-                                    borderRadius: "50%",
-                                    background: "rgba(255, 140, 0, 0.1)",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "20px"
-                                }}>
-                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>💬</span>
-                                </div>
-                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>Direct Messaging</h3>
-                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
-                                    Connect privately with team members through one-on-one conversations for focused communication.
-                                </p>
-                            </div>
-
-                            <div className="feature-card" style={{
-                                padding: "25px",
-                                borderRadius: "15px",
-                                background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
-                                boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
-                                border: "1px solid rgba(255, 140, 0, 0.2)"
-                            }}>
-                                <div style={{
-                                    width: "60px",
-                                    height: "60px",
-                                    borderRadius: "50%",
-                                    background: "rgba(255, 140, 0, 0.1)",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "20px"
-                                }}>
-                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>🔐</span>
-                                </div>
-                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>Role-Based Access</h3>
-                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
-                                    Admin and Member roles with different permissions for channel management and content moderation.
-                                </p>
-                            </div>
-                            <div className="feature-card" style={{
-                                padding: "25px",
-                                borderRadius: "15px",
-                                background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
-                                boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
-                                border: "1px solid rgba(255, 140, 0, 0.2)"
-                            }}>
-                                <div style={{
-                                    width: "60px",
-                                    height: "60px",
-                                    borderRadius: "50%",
-                                    background: "rgba(255, 140, 0, 0.1)",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginBottom: "20px"
-                                }}>
-                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>🤐</span>
-                                </div>
-                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>AI Censoring</h3>
-                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
-                                    Automated moderation feature that screens and filters sensitive or harmful content using AI-driven algorithms.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                     <div style={{ display: "flex", justifyContent: "center", gap: "20px" }}>
                         <button
                             onClick={() => navigate("/channels")}
@@ -234,6 +107,171 @@ function HomeComponent() {
                         >
                             Direct Messaging
                         </button>
+                    </div>
+
+                    <div style={{
+                        background: "white",
+                        borderRadius: "20px",
+                        padding: "40px",
+                        boxShadow: "0 10px 30px rgba(255, 140, 0, 0.1)",
+                        marginBottom: "40px"
+                    }}>
+                        <p style={{
+                            fontSize: "1.2rem",
+                            lineHeight: "1.8",
+                            color: "#555",
+                            marginBottom: "30px",
+                            textAlign: "center"
+                        }}>
+                            A versatile communication platform designed for seamless interaction through text channels and direct messaging.
+                            Create your digital space where ideas flow freely and collaboration thrives.
+                        </p>
+
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                            gap: "25px",
+                            marginBottom: "40px"
+                        }}>
+                            <div 
+                                className="feature-card" 
+                                onClick={() => navigate("/channels")}
+                                style={{
+                                    padding: "25px",
+                                    borderRadius: "15px",
+                                    background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
+                                    boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
+                                    border: "1px solid rgba(255, 140, 0, 0.2)",
+                                    cursor: "pointer",
+                                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                                    "&:hover": {
+                                        transform: "translateY(-5px)",
+                                        boxShadow: "0 8px 20px rgba(255, 140, 0, 0.2)"
+                                    }
+                                }}
+                            >
+                                <div style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    borderRadius: "50%",
+                                    background: "rgba(255, 140, 0, 0.1)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginBottom: "20px"
+                                }}>
+                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>📢</span>
+                                </div>
+                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>Text Channels</h3>
+                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
+                                    Join topic-specific channels like "General," "Project Help," and "Social" to engage in organized group discussions.
+                                </p>
+                            </div>
+
+                            <div 
+                                className="feature-card" 
+                                onClick={() => navigate("/direct-message")}
+                                style={{
+                                    padding: "25px",
+                                    borderRadius: "15px",
+                                    background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
+                                    boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
+                                    border: "1px solid rgba(255, 140, 0, 0.2)",
+                                    cursor: "pointer",
+                                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                                    "&:hover": {
+                                        transform: "translateY(-5px)",
+                                        boxShadow: "0 8px 20px rgba(255, 140, 0, 0.2)"
+                                    }
+                                }}
+                            >
+                                <div style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    borderRadius: "50%",
+                                    background: "rgba(255, 140, 0, 0.1)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginBottom: "20px"
+                                }}>
+                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>💬</span>
+                                </div>
+                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>Direct Messaging</h3>
+                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
+                                    Connect privately with team members through one-on-one conversations for focused communication.
+                                </p>
+                            </div>
+
+                            <div 
+                                className="feature-card" 
+                                onClick={() => navigate("/channels")}
+                                style={{
+                                    padding: "25px",
+                                    borderRadius: "15px",
+                                    background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
+                                    boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
+                                    border: "1px solid rgba(255, 140, 0, 0.2)",
+                                    cursor: "pointer",
+                                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                                    "&:hover": {
+                                        transform: "translateY(-5px)",
+                                        boxShadow: "0 8px 20px rgba(255, 140, 0, 0.2)"
+                                    }
+                                }}
+                            >
+                                <div style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    borderRadius: "50%",
+                                    background: "rgba(255, 140, 0, 0.1)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginBottom: "20px"
+                                }}>
+                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>🔐</span>
+                                </div>
+                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>Role-Based Access</h3>
+                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
+                                    Admin and Member roles with different permissions for channel management and content moderation.
+                                </p>
+                            </div>
+                            <div 
+                                className="feature-card" 
+                                onClick={() => navigate("/AI")}
+                                style={{
+                                    padding: "25px",
+                                    borderRadius: "15px",
+                                    background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)",
+                                    boxShadow: "0 5px 15px rgba(255, 140, 0, 0.1)",
+                                    border: "1px solid rgba(255, 140, 0, 0.2)",
+                                    cursor: "pointer",
+                                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                                    "&:hover": {
+                                        transform: "translateY(-5px)",
+                                        boxShadow: "0 8px 20px rgba(255, 140, 0, 0.2)"
+                                    }
+                                }}
+                            >
+                                <div style={{
+                                    width: "60px",
+                                    height: "60px",
+                                    borderRadius: "50%",
+                                    background: "rgba(255, 140, 0, 0.1)",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginBottom: "20px"
+                                }}>
+                                    <span style={{ fontSize: "24px", color: "#FF8C00" }}>🤐</span>
+                                </div>
+                                <h3 style={{ color: "#FF8C00", marginBottom: "15px", fontSize: "1.4rem" }}>AI Censoring</h3>
+                                <p style={{ color: "#666", lineHeight: "1.6", textAlign: "left" }}>
+                                    Automated moderation feature that screens and filters sensitive or harmful content using AI-driven algorithms.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
