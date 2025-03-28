@@ -1,5 +1,6 @@
 import AIComponent from "./AIComponent.jsx";
 import "./AIPage.css";
+import { useState } from 'react';
 
 function AIPage() {
     const accessToken = localStorage.getItem("accessToken")

@@ -120,7 +120,7 @@ const DirectMessageSidebar = ({
                     {renderChannelList()}
                 </div>
             </div>
-            
+
         </div>
     );
 };
