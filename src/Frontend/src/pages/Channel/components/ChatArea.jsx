@@ -34,7 +34,11 @@ const ChatArea = ({
 
         setMessage('');
     };
-
+    const getInitials = (username) => {
+        if (!username) return 'U';
+        const names = username.split(' ');
+        return names.map(name => name.charAt(0).toUpperCase()).join('');
+    }
     return (
         <div className="chat-area">
             <div className="chat-header">
@@ -46,7 +50,7 @@ const ChatArea = ({
                 {messages[channel?.channelID] && messages[channel.channelID].map(msg => (
                     <div key={msg._id} className="message">
                         <div className="message-avatar">
-                            TT
+                            {getInitials(msg?.senderUsername)}
                         </div>
                         <div className="message-body">
                             <div className="message-header">

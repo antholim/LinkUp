@@ -21,13 +21,6 @@
             scrollToBottom();
         }, [messages]);
 
-        useEffect(() => {
-            if (channel && channel.channelID) {
-                console.log('Saving channel ID to localStorage:', channel.channelID);
-                localStorage.setItem('lastVisitedChannelID', channel.channelID);
-            }
-        }, [channel]);
-
         const handleSendMessage = (e) => {
             e.preventDefault();
             if (!message.trim() || !isConnected) return;
@@ -49,7 +42,11 @@
 
             setMessage('');
         };
-
+        const getInitials = (username) => {
+            if (!username) return 'U';
+            const names = username.split(' ');
+            return names.map(name => name.charAt(0).toUpperCase()).join('');
+        }
         return (
             <div className="chat-area">
                 <div className="chat-header">
@@ -61,7 +58,7 @@
                     {channel?.channelID && messages[channel.channelID] && messages[channel.channelID].map(msg => (
                         <div key={msg._id || `msg-${Date.now()}-${Math.random()}`} className="message">
                             <div className="message-avatar">
-                                TT
+                                {getInitials(msg?.senderUsername)}
                             </div>
                             <div className="message-body">
                                 <div className="message-header">
