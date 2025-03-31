@@ -10,6 +10,16 @@ const ChatArea = ({
     sendJSON 
 }) => {
     const [message, setMessage] = useState('');
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({  });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const handleSendMessage = (e) => {
         e.preventDefault();
         if (!message.trim() || !isConnected) return;
@@ -24,7 +34,11 @@ const ChatArea = ({
 
         setMessage('');
     };
-
+    const getInitials = (username) => {
+        if (!username) return 'U';
+        const names = username.split(' ');
+        return names.map(name => name.charAt(0).toUpperCase()).join('');
+    }
     return (
         <div className="chat-area">
             <div className="chat-header">
@@ -36,7 +50,7 @@ const ChatArea = ({
                 {messages[channel?.channelID] && messages[channel.channelID].map(msg => (
                     <div key={msg._id} className="message">
                         <div className="message-avatar">
-                            TT
+                            {getInitials(msg?.senderUsername)}
                         </div>
                         <div className="message-body">
                             <div className="message-header">
@@ -49,6 +63,7 @@ const ChatArea = ({
                         </div>
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSendMessage} className="message-input-container">
                 <input
@@ -56,7 +71,7 @@ const ChatArea = ({
                     className="message-input"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder={`Message #${channel}`}
+                    placeholder={`Message in #${channel?.channelName}`}
                 />
                 <button type="submit" className="send-button">
                     Send

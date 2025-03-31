@@ -15,8 +15,8 @@ await connectToMongoDB();
 
 app.use("/", userRoutes)
 
-app.listen(PORT, ()=> {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 })
 
 
@@ -31,7 +31,7 @@ import { User } from "./models/user.js"
 const require = createRequire(import.meta.url);
 const webSocket = http.createServer();
 
-const wss = new WebSocketServer({ server:webSocket });
+const wss = new WebSocketServer({ server: webSocket });
 
 // Heartbeat interval
 const HEARTBEAT_INTERVAL = 30000;
@@ -44,7 +44,7 @@ const addToChannel = (clientId, channelId) => {
   if (!channels.has(channelId)) {
     channels.set(channelId, []);
   }
-  
+
   const channelClients = channels.get(channelId);
   if (!channelClients.includes(clientId)) {
     channelClients.push(clientId);
@@ -180,13 +180,13 @@ async function processMessageWithAI(messageContent) {
 
 wss.on('connection', async (ws, req) => {
   console.log('New connection established');
-  
+
   ws.isAlive = true;
   ws.on('pong', () => heartbeat(ws));
-  
+
   // Client ID will be set after authentication
   let clientId = null;
-  
+
   ws.on('message', async (message) => {
     try {
       const data = await JSON.parse(message);
@@ -206,50 +206,50 @@ wss.on('connection', async (ws, req) => {
           }
           console.log("authentication success")
           clients.set(clientId, { ws, clientId });
-          
+
         //   clientId = userId;
         //   clients.set(clientId, { ws, userId });
-          
+
         //   // Join user's channels
         //   const userChannels = await Channel.find({ 
         //     members: { $elemMatch: { userId } } 
         //   });
-          
+
         //   userChannels.forEach(channel => {
         //     addToChannel(clientId, channel._id.toString());
         //   });
-          
+
         //   sendJSON(ws, 'authenticated', { userId });
         //   break;
-          
+
         case 'join_channel':
           console.log("JOIN CHANNEL")
           if (!clientId) {
             sendJSON(ws, 'error', { message: 'Not authenticated1' });
             return;
           }
-          
-          
+
+
           addToChannel(clientId, data.data.channelId);
           console.log(`User ${clientId} joined channel ${data.data.channelId}`);
           break;
-          
+
         case 'leave_channel':
           if (!clientId) {
             sendJSON(ws, 'error', { message: 'Not authenticated2' });
             return;
           }
-          
+
           // removeFromChannel(clientId, data.channelId);
           console.log(`User ${clientId} left channel ${data.channelId}`);
           break;
-          
+
         // case 'send_message':
         //   if (!clientId) {
         //     sendJSON(ws, 'error', { message: 'Not authenticated3' });
         //     return;
         //   }
-          
+
         //   try{
         //     const AImodRaw = await processMessageWithAI(data.data.content);
         //     const AIMod = await JSON.parse(AImodRaw.predictions.trim())
@@ -285,12 +285,12 @@ wss.on('connection', async (ws, req) => {
         //     senderUsername:user.username,
         //     content: data.data.content,
         //   })
-          
+
         //   // Populate sender info for frontend display
         //   const populatedMessage = await Message.findById(newMessage._id)
         //     .populate('senderId', 'username avatarUrl')
         //     .lean();
-          
+
         //   // Broadcast to everyone in the channel
         //   console.log(populatedMessage, "populated message")
         //   broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
@@ -302,69 +302,70 @@ wss.on('connection', async (ws, req) => {
 
         case 'send_message':
           if (!clientId) {
-              sendJSON(ws, 'error', { message: 'Not authenticated3' });
-              return;
+            sendJSON(ws, 'error', { message: 'Not authenticated3' });
+            return;
           }
-          
+
           try {
-              // 🔹 Get AI Analysis
-              // const AIMod = await processMessageWithAI(data.data.content);
-              // console.log("AI Analysis:", AIMod);
-      
-              // //Get the user’s active filters (from frontend request)
-              // console.log(clientId, "TAMER")
-              // const user = await User.findOne({ _id: clientId })
-              // const userFilters = user.filters || []; // Add filters here
-              // console.log("User filters:", userFilters);
-      
-              // //Check if the message triggers any active filters
-              // const isHarmful = Object.keys(AIMod).some(
-              //     (label) => userFilters.includes(label) && AIMod[label] == 1
-              // );
-              // console.log(isHarmful, "IS HARMFUL")
-              // if (isHarmful) {
-              //     sendJSON(ws, "message_blocked", {
-              //         message: "Your message may contain harmful content and was not sent.",
-              //         blockedBy: userFilters
-              //     });
-              //     console.log(
-              //         `Blocked message from ${clientId}: "${data.data.content}" based on filters: ${userFilters}`
-              //     );
-              //     return;
-              // }
-      
-              // 🔹 Save Message with User Filters
-              const newMessage = await Message.create({
-                  channelId: data.data.channelId,
-                  senderId: clientId,
-                  senderUsername: user.username,
-                  content: data.data.content,
-                  // userFilters
-              });
-      
-              console.log("MESSAGE CREATED:", newMessage);
-      
-              // 🔹 Populate sender info for frontend display
-              const populatedMessage = await Message.findById(newMessage._id)
-                  .populate('senderId', 'username avatarUrl')
-                  .lean();
-      
-              // 🔹 Broadcast the message
-              console.log(populatedMessage, "populated message");
-              console.log(data.data.channelId, "ABDEL")
-              broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
-      
+            // 🔹 Get AI Analysis
+            const user = await User.findOne({ _id: clientId })
+            const userFilters = user.filters || []; // Add filters here
+            console.log("User filters:", userFilters);
+
+            let AIMod;
+            if (userFilters.length !== 0) {
+              AIMod = await processMessageWithAI(data.data.content);
+              //Check if the message triggers any active filters
+              const isHarmful = Object.keys(AIMod).some(
+                (label) => userFilters.includes(label) && AIMod[label] == 1
+              );
+              console.log(isHarmful, "IS HARMFUL")
+              if (isHarmful) {
+                sendJSON(ws, "message_blocked", {
+                  message: "Your message may contain harmful content and was not sent.",
+                  blockedBy: userFilters
+                });
+                console.log(
+                  `Blocked message from ${clientId}: "${data.data.content}" based on filters: ${userFilters}`
+                );
+                return;
+              }
+              console.log("AI Analysis:", AIMod);
+            }
+            //Get the user’s active filters (from frontend request)
+
+            // 🔹 Save Message with User Filters
+            const newMessage = await Message.create({
+              channelId: data.data.channelId,
+              senderId: clientId,
+              senderUsername: user.username,
+              content: data.data.content,
+              // userFilters
+            });
+
+            console.log("MESSAGE CREATED:", newMessage);
+
+            // 🔹 Populate sender info for frontend display
+            const populatedMessage = await Message.findById(newMessage._id)
+              .populate('senderId', 'username avatarUrl')
+              .lean();
+
+            // 🔹 Broadcast the message
+            console.log(populatedMessage, "populated message");
+            console.log(data.data.channelId, "ABDEL")
+            broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
+
           } catch (error) {
-              console.error("Error processing message with AI:", error);
+            console.error("Error processing message with AI:", error);
           }
           break;
-      
-      
+
+
 
         case 'ping':
           sendJSON(ws, 'pong', {});
           return;
-        
+
         default:
           console.log('Unknown message type:', data.type);
       }
@@ -373,17 +374,17 @@ wss.on('connection', async (ws, req) => {
       sendJSON(ws, 'error', { message: 'Failed to process message' });
     }
   });
-  
+
   // Handle disconnection
   ws.on('close', () => {
     console.log('Connection closed:', clientId);
-    
+
     if (clientId) {
       // Remove from all channels
       channels.forEach((clientIds, channelId) => {
         // removeFromChannel(clientId, channelId);
       });
-      
+
       // Remove from clients list
       clients.delete(clientId);
     }
@@ -392,22 +393,22 @@ wss.on('connection', async (ws, req) => {
 
 // Implement heartbeat check
 const interval = setInterval(() => {
-    wss.clients.forEach((ws) => {
-        if (ws.isAlive === false) {
-            console.log('Terminating inactive connection');
-            return ws.terminate();
-        }
-        
-        ws.isAlive = false;
-        ws.ping();
-    });
+  wss.clients.forEach((ws) => {
+    if (ws.isAlive === false) {
+      console.log('Terminating inactive connection');
+      return ws.terminate();
+    }
+
+    ws.isAlive = false;
+    ws.ping();
+  });
 }, HEARTBEAT_INTERVAL);
 
 wss.on('close', () => {
-    clearInterval(interval);
+  clearInterval(interval);
 });
 
 const WEBSOCKET_PORT = 4000;
 webSocket.listen(WEBSOCKET_PORT, () => {
-    console.log(`WebSocket server is running on ws://localhost:${WEBSOCKET_PORT}`);
+  console.log(`WebSocket server is running on ws://localhost:${WEBSOCKET_PORT}`);
 });

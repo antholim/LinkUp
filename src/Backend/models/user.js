@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String
     },
+    role: {
+        type:String,
+        enum:["member", "admin"],
+    },
     filters: { type: [String], default: [] },
 },{ timestamps: true });
 

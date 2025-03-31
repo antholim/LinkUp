@@ -4,6 +4,7 @@
   background-color: #f8f4ee;
   color: #333;
   font-family: 'Inter', 'Segoe UI', sans-serif;
+  overflow: hidden;
 }
 
 .servers-list {

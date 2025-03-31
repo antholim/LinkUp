@@ -165,4 +165,10 @@ export default class UserService {
             { new: true } // Return the updated document
         );
     }
+    async getUserRole(userId) {
+        const user = await User.findById(userId);
+        return {"role": user.role,
+            userId
+        };
+    }
 }
