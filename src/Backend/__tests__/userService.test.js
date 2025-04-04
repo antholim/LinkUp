@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import mongoose from "mongoose";
 
-// Mock dependencies
 jest.mock('../models/user.js');
 jest.mock('bcrypt');
 jest.mock('jsonwebtoken');
@@ -18,9 +17,7 @@ describe("UserService", () => {
 
   beforeEach(() => {
     userService = new UserService();
-    // Clear all mocks before each test
     jest.clearAllMocks();
-    // Spy on console methods
     consoleSpy = {
       log: jest.spyOn(console, "log").mockImplementation(),
       error: jest.spyOn(console, "error").mockImplementation()
@@ -28,14 +25,12 @@ describe("UserService", () => {
   });
 
   afterEach(() => {
-    // Restore console mocks
     consoleSpy.log.mockRestore();
     consoleSpy.error.mockRestore();
   });
 
   describe("registerUser", () => {
     it("should register a new user successfully", async () => {
-      // Arrange
       const email = "test@example.com";
       const password = "password123";
       const username = "testuser";
@@ -50,10 +45,8 @@ describe("UserService", () => {
         password: hashedPassword
       });
 
-      // Act
       const result = await userService.registerUser(email, password, username);
 
-      // Assert
       expect(bcrypt.hash).toHaveBeenCalledWith(password, 10);
       expect(User.findOne).toHaveBeenCalledWith({ $or: [{ email }, { username: email }] });
       expect(User.create).toHaveBeenCalledWith({
@@ -68,7 +61,6 @@ describe("UserService", () => {
     });
 
     it("should return 409 if user already exists", async () => {
-      // Arrange
       const email = "existing@example.com";
       const password = "password123";
       const username = "existinguser";
@@ -79,10 +71,8 @@ describe("UserService", () => {
         username
       });
 
-      // Act
       const result = await userService.registerUser(email, password, username);
 
-      // Assert
       expect(User.findOne).toHaveBeenCalledWith({ $or: [{ email }, { username: email }] });
       expect(User.create).not.toHaveBeenCalled();
       expect(result).toEqual({
@@ -92,7 +82,6 @@ describe("UserService", () => {
     });
 
     it("should handle internal server errors", async () => {
-      // Arrange
       const email = "test@example.com";
       const password = "password123";
       const username = "testuser";
@@ -101,10 +90,8 @@ describe("UserService", () => {
       bcrypt.hash.mockResolvedValue("hashedpassword");
       User.findOne.mockRejectedValue(error);
 
-      // Act
       const result = await userService.registerUser(email, password, username);
 
-      // Assert
       expect(consoleSpy.error).toHaveBeenCalledWith(error);
       expect(result).toEqual({
         status: 500,
@@ -115,7 +102,6 @@ describe("UserService", () => {
 
   describe("authenticateUser", () => {
     it("should authenticate a user with valid credentials", async () => {
-      // Arrange
       const email = "test@example.com";
       const password = "password123";
       const user = {
@@ -131,13 +117,10 @@ describe("UserService", () => {
       bcrypt.compare.mockResolvedValue(true);
       jwt.sign.mockReturnValue(token);
 
-      // Mock createToken method
       jest.spyOn(userService, 'createToken').mockResolvedValue(token);
 
-      // Act
       const result = await userService.authenticateUser(email, password);
 
-      // Assert
       expect(User.findOne).toHaveBeenCalledWith({ $or: [{ email }, { username: email }] });
       expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
       expect(userService.createToken).toHaveBeenCalledWith(
@@ -158,16 +141,13 @@ describe("UserService", () => {
     });
 
     it("should return 404 if user is not found", async () => {
-      // Arrange
       const email = "nonexistent@example.com";
       const password = "password123";
       
       User.findOne.mockResolvedValue(null);
 
-      // Act
       const result = await userService.authenticateUser(email, password);
 
-      // Assert
       expect(User.findOne).toHaveBeenCalledWith({ $or: [{ email }, { username: email }] });
       expect(bcrypt.compare).not.toHaveBeenCalled();
       expect(result).toEqual({
@@ -177,7 +157,6 @@ describe("UserService", () => {
     });
 
     it("should return 400 if password is invalid", async () => {
-      // Arrange
       const email = "test@example.com";
       const password = "wrongpassword";
       const user = {
@@ -190,10 +169,8 @@ describe("UserService", () => {
       User.findOne.mockResolvedValue(user);
       bcrypt.compare.mockResolvedValue(false);
 
-      // Act
       const result = await userService.authenticateUser(email, password);
 
-      // Assert
       expect(User.findOne).toHaveBeenCalledWith({ $or: [{ email }, { username: email }] });
       expect(bcrypt.compare).toHaveBeenCalledWith(password, user.password);
       expect(result).toEqual({
@@ -206,7 +183,6 @@ describe("UserService", () => {
 
   describe("joinChannel", () => {
     it("should add a channel to user's channels array", async () => {
-      // Arrange
       const userId = validUserId;
       const channelId = validChannelId;
       const updatedUser = {
@@ -217,10 +193,8 @@ describe("UserService", () => {
       
       User.findByIdAndUpdate.mockResolvedValue(updatedUser);
 
-      // Act
       await userService.joinChannel(userId, channelId);
 
-      // Assert
       expect(User.findByIdAndUpdate).toHaveBeenCalledWith(
         userId,
         { $push: { channels: channelId } },
@@ -231,7 +205,6 @@ describe("UserService", () => {
 
   describe("createToken", () => {
     it("should create a JWT token with the provided payload", async () => {
-      // Arrange
       const payload = { userId: validUserId };
       const secret = "test-secret";
       const expiresIn = "1h";
@@ -239,10 +212,8 @@ describe("UserService", () => {
       
       jwt.sign.mockReturnValue(token);
 
-      // Act
       const result = await userService.createToken(payload, secret, expiresIn);
 
-      // Assert
       expect(jwt.sign).toHaveBeenCalledWith(payload, secret, { expiresIn });
       expect(result).toBe(token);
     });
@@ -250,7 +221,6 @@ describe("UserService", () => {
 
   describe("verifyToken", () => {
     it("should verify a JWT token and return decoded payload", async () => {
-      // Arrange
       const token = "jwt-token-123";
       const secret = "test-secret";
       const decodedPayload = { userId: validUserId };
@@ -260,10 +230,8 @@ describe("UserService", () => {
         return decodedPayload;
       });
 
-      // Act
       const result = await userService.verifyToken(token, secret);
 
-      // Assert
       expect(jwt.verify).toHaveBeenCalledWith(token, secret, expect.any(Function));
       expect(consoleSpy.log).toHaveBeenCalledWith(decodedPayload);
       expect(result).toEqual(decodedPayload);
@@ -272,7 +240,6 @@ describe("UserService", () => {
 
   describe("addFriend", () => {
     it("should add a friend to user's friends array", async () => {
-      // Arrange
       const userId = validUserId;
       const friendId = validFriendId;
       const updatedUser = {
@@ -283,10 +250,8 @@ describe("UserService", () => {
       
       User.findByIdAndUpdate.mockResolvedValue(updatedUser);
 
-      // Act
       const result = await userService.addFriend(userId, friendId);
 
-      // Assert
       expect(User.findByIdAndUpdate).toHaveBeenCalledWith(
         userId,
         { $push: { friends: friendId } },
@@ -301,7 +266,6 @@ describe("UserService", () => {
 
   describe("getAllFriends", () => {
     it("should return all friends with their usernames and ids", async () => {
-      // Arrange
       const userId = validUserId;
       const friendIds = [
         "507f1f77bcf86cd799439044",
@@ -334,10 +298,8 @@ describe("UserService", () => {
         return Promise.resolve(null);
       });
 
-      // Act
       const result = await userService.getAllFriends(userId);
 
-      // Assert
       expect(User.findOne).toHaveBeenCalledWith({ _id: userId });
       expect(result).toEqual([
         { username: "friend1", _id: friendIds[0] },
