@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import AdminPanel from "./pages/AdminPanel/AdminPanel";
 import AIPage from "./pages/AI/AIPage";
 import ChannelsPage from "./pages/Channel/ChannelsPage";
 import MessagingPage from "./pages/DirectMessage/MessagingPage";
@@ -9,6 +10,7 @@ import RegisterPage from './pages/Register/RegisterPage';
 import RootPage from './pages/Root/RootPage';
 import { fetchingService } from "./services/fetchingService";
 
+
 // Create an auth context
 export const AuthContext = createContext(null);
 
@@ -17,6 +19,7 @@ export const useAuth = () => useContext(AuthContext);
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -27,6 +30,7 @@ function App() {
           const response = await fetchingService.post("/authenticate", {accessToken: token}, {}, true);
           if (response?.status === 200) {
             setIsAuthenticated(true);
+            setUser(response.user);
           }
         }
       } catch (error) {
@@ -71,11 +75,17 @@ function App() {
     {
       path: "/AI",
       element: isAuthenticated ? <AIPage /> : <Navigate to="/login" />, // Fixed condition
+      
     },
+    {
+      path: "/admin",
+      element: user?.role === "admin" ? <AdminPanel /> : <Navigate to="/login" />,
+    }
+    
   ]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated ,user, setUser }}>
       <RouterProvider router={router} />
     </AuthContext.Provider>
   );
