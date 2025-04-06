@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../App";
-import './LoginPage.css';
+// import { useAuth } from "../../App";
+import { useAuth } from "../../components/AdminOnly";
 import NavigationButtons from "../../components/NavigationButton";
+import './LoginPage.css';
 
 function LoginComponent() {
-    const { setIsAuthenticated } = useAuth();
+    const { setIsAuthenticated, setUser } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -24,10 +25,11 @@ function LoginComponent() {
 
             const data = await response.json();
             console.log(data)
-            if (data.status == 200) {
+            if (data.status === 200) {
                 console.log("TEST")
                 localStorage.setItem('accessToken', data.accessToken);
                 setIsAuthenticated(true)
+                setUser(data.user);
                 navigate('/home')
             } else {
                 alert('Login failed: ' + data.message);
