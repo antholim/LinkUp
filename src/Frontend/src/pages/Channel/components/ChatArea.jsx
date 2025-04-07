@@ -47,24 +47,27 @@ const ChatArea = ({
             </div>
 
             <div className="messages-container">
-                {messages[channel?.channelID] && messages[channel.channelID].map(msg => (
-                    <div key={msg._id} className="message">
-                        <div className="message-avatar">
-                            {getInitials(msg?.senderUsername)}
-                        </div>
-                        <div className="message-body">
-                            <div className="message-header">
-                                <span className="message-author">{msg?.senderUsername}</span>
-                                <span className="message-timestamp">{formatDate(msg.createdAt)}</span>
-                            </div>
-                            <div className="message-content">
-                                {msg.content}
-                            </div>
-                        </div>
-                    </div>
-                ))}
-                <div ref={messagesEndRef} />
+    {messages[channel?.channelID] && messages[channel.channelID].map(msg => (
+        <div key={msg._id} className="message">
+            <div className="message-avatar">
+                {getInitials(msg?.senderUsername)}
             </div>
+            <div className="message-body">
+                <div className="message-header">
+                    <span className="message-author">{msg?.senderUsername}</span>
+                    <span className="message-timestamp">{formatDate(msg.createdAt)}</span>
+                    <button className="delete-message-btn" onClick={() => handleDeleteMessage(msg._id)}>
+                        <span className="delete-icon">×</span>
+                    </button>
+                </div>
+                <div className="message-content">
+                    {msg.content}
+                </div>
+            </div>
+        </div>
+    ))}
+    <div ref={messagesEndRef} />
+</div>
             <form onSubmit={handleSendMessage} className="message-input-container">
                 <input
                     type="text"
