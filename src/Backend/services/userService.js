@@ -74,6 +74,7 @@ export default class UserService {
                     _id: user._id,
                     email: email,
                     username: user.username,
+                    role : user.role,
                     iat: Math.floor(Date.now() / 1000) - 30,
                     permissions: user.subscriptionType
                 }, process.env.JWT_SECRET, '4h');
@@ -170,5 +171,17 @@ export default class UserService {
         return {"role": user.role,
             userId
         };
+    }
+    async getUsers() {
+        const users = await User.find({});
+        return users.map(({_id, username, email, role}) => ({_id, username, email, role}));
+    }
+    async promoteUser(_id) {
+        const user = await User.findByIdAndUpdate(
+            _id, 
+            { role: "admin" },
+            { new: true }
+          );
+        return user;
     }
 }

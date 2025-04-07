@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { useAuth } from "../../App";
-import { useAuth } from "../../components/AdminOnly";
+import { useAuth } from "../../components/AuthContext";
 import NavigationButtons from "../../components/NavigationButton";
 import './LoginPage.css';
 
@@ -30,12 +30,14 @@ function LoginComponent() {
                 localStorage.setItem('accessToken', data.accessToken);
                 setIsAuthenticated(true)
                 setUser(data.user);
-                navigate('/home')
+                navigate('/home');
             } else {
                 alert('Login failed: ' + data.message);
             }
         } catch (error) {
             alert('An error occured: ' + error.message);
+        } finally {
+            navigate('/home');
         }
     };
     

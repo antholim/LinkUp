@@ -30,7 +30,7 @@ function App() {
           const response = await fetchingService.post("/authenticate", {accessToken: token}, {}, true);
           if (response?.status === 200) {
             setIsAuthenticated(true);
-            setUser(response.user);
+            setUser(response.data.user);
           }
         }
       } catch (error) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchingService } from "../../services/fetchingService"; // Fetching service for API calls
-import { useAuth } from "../AuthContext"; // Custom hook for auth context
+import { useAuth } from "../../components/AuthContext";
 
 function PromoteUser() {
   const { user } = useAuth(); // Get logged-in user from context
@@ -13,12 +13,13 @@ function PromoteUser() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetchingService.get("/users", {
+        const response = await fetchingService.get("/get-all-user", {
           accessToken: localStorage.getItem("accessToken"),
         });
-        setUsers(response.users || []);
+        setUsers(response || []);
       } catch (err) {
-        setError("Failed to load users."),err;
+        setError("Failed to load users.", err);
+        console.log(err)
       }
     };
     fetchUsers();
@@ -31,9 +32,8 @@ function PromoteUser() {
     try {
       const response = await fetchingService.patch("/promote-user", {
         accessToken: localStorage.getItem("accessToken"),
-        userId: selectedUser, // Send the selected user's ID to promote
+        _id: selectedUser, // Send the selected user's ID to promote
       });
-
       if (response.status === 200) {
         setSuccess("User promoted successfully.");
         setError(""); // Clear any previous error
@@ -42,7 +42,7 @@ function PromoteUser() {
         setSuccess("");
       }
     } catch (err) {
-      setError("An error occurred while promoting.",err);
+      setError("An error occurred while promoting.", err);
     }
   };
 
@@ -68,6 +68,7 @@ function PromoteUser() {
             </option>
           ))}
       </select>
+
 
       <button onClick={handlePromote} disabled={!selectedUser}>
         Promote

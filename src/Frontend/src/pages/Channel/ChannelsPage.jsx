@@ -162,18 +162,17 @@ const ChannelsPage = () => {
         };
     }, [sendJSON]);
 
-    // Heartbeat
-    // useEffect(() => {
-    //     if (!isConnected) return;
+    useEffect(() => {
+        if (!isConnected) return;
 
-    //     const pingInterval = setInterval(() => {
-    //         if (wsRef.current?.readyState === WebSocket.OPEN) {
-    //             sendJSON('ping', {});
-    //         }
-    //     }, 30000);
+        const pingInterval = setInterval(() => {
+            if (wsRef.current?.readyState === WebSocket.OPEN) {
+                sendJSON('ping', {});
+            }
+        }, 30000);
 
-    //     return () => clearInterval(pingInterval);
-    // }, [isConnected, sendJSON]);
+        return () => clearInterval(pingInterval);
+    }, [isConnected, sendJSON]);
 
     return (
         <div className="channels-container">

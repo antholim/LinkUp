@@ -81,7 +81,7 @@ function DeleteChannel({ onClose }) {
       </select>
       <AdminOnly>
         <div className="modal-actions">
-              {user.role === 'admin' && (
+              {user?.role === 'admin' && (
             <button 
               onClick={handleDelete} 
               className="action-button"

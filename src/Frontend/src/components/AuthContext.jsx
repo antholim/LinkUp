@@ -26,9 +26,10 @@ export const AuthProvider = ({ children }) => {
             true
           );
           if (response?.status === 200) {
-            setUser(response.user);
+            setUser(response.data.user);
             setIsAuthenticated(true);
           }
+          console.log(response.data.user, "HERE")
         }
       } catch (error) {
         console.error("Authentication failed:", error);
