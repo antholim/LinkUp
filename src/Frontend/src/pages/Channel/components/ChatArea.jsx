@@ -39,6 +39,13 @@ const ChatArea = ({
         const names = username.split(' ');
         return names.map(name => name.charAt(0).toUpperCase()).join('');
     }
+    const handleDeleteMessage = (messageId) => {
+        sendJSON('delete_message', {
+            messageId: messageId,
+            channelId: channel.channelID,
+            accessToken: localStorage.getItem('accessToken')
+        });
+    }
     return (
         <div className="chat-area">
             <div className="chat-header">

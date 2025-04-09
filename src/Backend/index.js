@@ -71,37 +71,6 @@ const heartbeat = (ws) => {
   ws.isAlive = true;
 };
 
-// async function processMessageWithAI(messageContent) {
-//   const inputData = { text: messageContent };
-//   const pythonProcess = spawn("python", ["run_model.py"]);
-
-//   // Return a Promise to handle asynchronous behavior
-//   return new Promise((resolve, reject) => {
-//     // Send input data to Python via stdin
-//     pythonProcess.stdin.write(JSON.stringify(inputData));
-//     pythonProcess.stdin.end(); // Close stdin after sending data
-
-//     // Capture Python output
-//     pythonProcess.stdout.on("data", (data) => {
-//       console.log(`Python Output: ${data.toString()}`);
-//       resolve({
-//         predictions: data.toString()
-//       });
-//     });
-
-//     // Handle errors
-//     pythonProcess.stderr.on("data", (error) => {
-//       reject(`Error: ${error.toString()}`);
-//     });
-
-//     pythonProcess.on("close", (code) => {
-//       if (code !== 0) {
-//         reject(`Python process exited with code ${code}`);
-//       }
-//     });
-//   });
-// }
-
 async function processMessageWithAI(messageContent) {
   return new Promise((resolve, reject) => {
     const pythonProcess = spawn("python", ["run_model.py"]);
@@ -145,39 +114,6 @@ async function processMessageWithAI(messageContent) {
 }
 
 
-// async function processMessageWithAI(messageContent) {
-//   return new Promise((resolve, reject) => {
-//     const pythonProcess = spawn("python3", ["run_model.py"]);
-
-//     pythonProcess.stdin.write(JSON.stringify({ text: messageContent }));
-//     pythonProcess.stdin.end();
-
-//     let outputData = "";
-//     pythonProcess.stdout.on("data", (data) => {
-//       outputData += data.toString();
-//     });
-
-//     pythonProcess.stderr.on("data", (data) => {
-//       console.error(`Python Error: ${data.toString()}`);
-//       reject(new Error("Python process error"));
-//     });
-
-//     pythonProcess.on("close", (code) => {
-//       if (code !== 0) {
-//         reject(new Error(`Python process exited with code ${code}`));
-//       } else {
-//         try {
-//           const parsedData = JSON.parse(outputData.trim());
-//           resolve(parsedData); // Parsed AI analysis result
-//         } catch (error) {
-//           reject(new Error("Failed to parse Python output"));
-//         }
-//       }
-//     });
-//   });
-// }
-
-
 wss.on('connection', async (ws, req) => {
   console.log('New connection established');
 
@@ -207,21 +143,6 @@ wss.on('connection', async (ws, req) => {
           console.log("authentication success")
           clients.set(clientId, { ws, clientId });
 
-        //   clientId = userId;
-        //   clients.set(clientId, { ws, userId });
-
-        //   // Join user's channels
-        //   const userChannels = await Channel.find({ 
-        //     members: { $elemMatch: { userId } } 
-        //   });
-
-        //   userChannels.forEach(channel => {
-        //     addToChannel(clientId, channel._id.toString());
-        //   });
-
-        //   sendJSON(ws, 'authenticated', { userId });
-        //   break;
-
         case 'join_channel':
           console.log("JOIN CHANNEL")
           if (!clientId) {
@@ -244,62 +165,6 @@ wss.on('connection', async (ws, req) => {
           console.log(`User ${clientId} left channel ${data.channelId}`);
           break;
 
-        // case 'send_message':
-        //   if (!clientId) {
-        //     sendJSON(ws, 'error', { message: 'Not authenticated3' });
-        //     return;
-        //   }
-
-        //   try{
-        //     const AImodRaw = await processMessageWithAI(data.data.content);
-        //     const AIMod = await JSON.parse(AImodRaw.predictions.trim())
-        //     console.log("AI Analysis:", AIMod);
-
-        //     //Check if the message falls into any of the 6 harmful categories
-        //     const isHarmful = Object.values(AIMod).some(
-        //       (value) => value === 1
-        //     );
-
-        //     if (isHarmful) {
-        //       // Notify the user that their message is harmful and won't be sent
-        //       sendJSON(ws, "message_blocked", {
-        //         message: "Your message may contain harmful content and was not sent.",
-        //       });
-        //       console.log(
-        //         `Blocked message from ${clientId}: "${data.data.content}"`
-        //       );
-        //       return;
-        //     }
-
-        //   // Create new message in database
-        //   const newMessage = await Message.create({
-        //     channelId: data.data.channelId,
-        //     senderId: clientId, // Use authenticated user ID
-        //     senderUsername:user.username,
-        //     content: data.data.content,
-        //   });
-        //   console.log("MESSAGE CREATED")
-        //   console.log({
-        //     channelId: data.data.channelId,
-        //     senderId: clientId, // Use authenticated user ID
-        //     senderUsername:user.username,
-        //     content: data.data.content,
-        //   })
-
-        //   // Populate sender info for frontend display
-        //   const populatedMessage = await Message.findById(newMessage._id)
-        //     .populate('senderId', 'username avatarUrl')
-        //     .lean();
-
-        //   // Broadcast to everyone in the channel
-        //   console.log(populatedMessage, "populated message")
-        //   broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
-
-        //   }catch(error){
-        //     console.error("Error processing message with AI:", error);
-        //   }
-        //   break;
-
         case 'send_message':
           if (!clientId) {
             sendJSON(ws, 'error', { message: 'Not authenticated3' });
@@ -307,7 +172,6 @@ wss.on('connection', async (ws, req) => {
           }
 
           try {
-            // 🔹 Get AI Analysis
             const user = await User.findOne({ _id: clientId })
             const userFilters = user.filters || []; // Add filters here
             console.log("User filters:", userFilters);
@@ -334,7 +198,7 @@ wss.on('connection', async (ws, req) => {
             }
             //Get the user’s active filters (from frontend request)
 
-            // 🔹 Save Message with User Filters
+            // Save Message with User Filters
             const newMessage = await Message.create({
               channelId: data.data.channelId,
               senderId: clientId,
@@ -345,12 +209,12 @@ wss.on('connection', async (ws, req) => {
 
             console.log("MESSAGE CREATED:", newMessage);
 
-            // 🔹 Populate sender info for frontend display
+            // Populate sender info for frontend display
             const populatedMessage = await Message.findById(newMessage._id)
               .populate('senderId', 'username avatarUrl')
               .lean();
 
-            // 🔹 Broadcast the message
+            // Broadcast the message
             console.log(populatedMessage, "populated message");
             console.log(data.data.channelId, "ABDEL")
             broadcastToChannel(data.data.channelId, 'new_message', populatedMessage);
@@ -359,13 +223,32 @@ wss.on('connection', async (ws, req) => {
             console.error("Error processing message with AI:", error);
           }
           break;
-
+          case 'delete_message':
+            if (!clientId) {
+              sendJSON(ws, 'error', { message: 'Not authenticated4' });
+              return;
+            }
+  
+            try {
+  
+              console.log("MESSAGE DELETED:", data.data, "ICI");
+  
+              // Populate sender info for frontend display
+              const messageId = data.data.messageId;
+              const channelId = data.data.channelId;
+  
+              await Message.findByIdAndDelete(messageId);
+              broadcastToChannel(channelId, 'delete_message', messageId);
+  
+            } catch (error) {
+              console.error("Error processing message with AI:", error);
+            }
+            break;
 
 
         case 'ping':
           sendJSON(ws, 'pong', {});
           return;
-
         default:
           console.log('Unknown message type:', data.type);
       }

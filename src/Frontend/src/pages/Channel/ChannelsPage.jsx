@@ -98,6 +98,10 @@ const ChannelsPage = () => {
                                     };
                                 });
                                 break;
+                            case 'delete_message':
+                                console.log("deleting message...")
+                                window.location.reload();
+                                break;
                             case 'message_blocked':
                                 console.log("Message blocked case triggered:", message);
                                 alert(`${message.data.message}\nBlocked by: ${message.data.blockedBy.join(", ")}`);
