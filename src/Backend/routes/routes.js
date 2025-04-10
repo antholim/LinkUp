@@ -22,6 +22,7 @@ router.post("/add-friend", UserController.addFriendController())
 // }
 router.post("/create-channel", ChannelController.createChannelController())
 router.get("/get-all-channel", ChannelController.getAllChannelController())
+router.get('/get-all-user', UserController.getAllUserController())
 // [
 //     {
 //         "_id": "67be08223f20980c8ba8c22d",
@@ -35,6 +36,7 @@ router.get("/get-all-channel", ChannelController.getAllChannelController())
 router.patch("/delete-channel", ChannelController.deleteChannelController())
 
 router.patch("/join-channel", UserController.joinChannelController())
+router.patch("/promote-user", UserController.promoteUserController())
 router.get("/retrieve-channel-message", MessageController.retrieveChannelMessageController())
 
 router.post("/get-user-filters", UserController.getUserFiltersController());

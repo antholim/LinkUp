@@ -58,7 +58,7 @@ const authenticationController = () => {
             const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
             const userID = decoded._id;
             if (userID) {
-                res.status(200).json({message:"Success"});
+                res.status(200).json({message:"Success", user: decoded});
             } else {
                 res.status(401).json({message:"Error"});
             }
@@ -209,7 +209,53 @@ const userRoleController = () => {
     };
 };
 
+const getAllUserController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Getting users...");
+            const accessToken = req.query.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET);
+            const userId = decoded._id;
+
+            if (!userId && decoded.role !== "admin") {
+                return res.status(401).json({ message: "Unauthorized" });
+            }
+
+            const users = await userService.getUsers();
+            console.log(users)
+            res.status(200).json(users);
+        } catch (error) {
+            console.error("Error updating user filters:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    };
+}
+
+const promoteUserController = () => {
+    return async function (req, res) {
+        try {
+            console.log("Trying to promote user...");
+            const accessToken = req.body.accessToken;
+            const decoded = await userService.verifyToken(accessToken, process.env.JWT_SECRET)
+
+            const userIdToPromote = req.body._id;
+            if (decoded?.role === "admin") {
+                const response = await userService.promoteUser(userIdToPromote);
+                console.log(response);
+                res.status(200).json({
+                    message: "Success"
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                status: 200,
+                message: "Internal server error"
+            });
+        }
+    }
+}
 
 const UserController = {registerController, loginController, joinChannelController, authenticationController, 
-    getAllFriendsController, addFriendController, getUserFiltersController, updateUserFiltersController, findAUserController, userRoleController};
+    getAllFriendsController, addFriendController, getUserFiltersController, updateUserFiltersController, findAUserController, userRoleController, getAllUserController, promoteUserController};
 export default UserController;

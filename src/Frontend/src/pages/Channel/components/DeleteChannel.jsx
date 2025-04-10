@@ -1,7 +1,13 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from "react";
+import AdminOnly from "../../../components/AdminOnly";
+import { useAuth } from "../../../components/AuthContext"; // adjust path if needed
 import { fetchingService } from "../../../services/fetchingService";
 
+
+
 function DeleteChannel({ onClose }) {
+  const { user } = useAuth();
   const [channels, setChannels] = useState([]);
   const [selectedChannel, setSelectedChannel] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -29,6 +35,7 @@ function DeleteChannel({ onClose }) {
   };
 
   const handleDelete = async () => {
+
     if (!selectedChannel) {
       setError("Please select a channel to delete");
       return;
@@ -72,18 +79,24 @@ function DeleteChannel({ onClose }) {
           </option>
         ))}
       </select>
-      
-      <div className="modal-actions">
-        <button 
-          onClick={handleDelete} 
-          className="action-button"
-          disabled={isDeleting || !selectedChannel}
-        >
-          {isDeleting ? "Deleting..." : "Delete Channel"}
-        </button>
-      </div>
+      <AdminOnly>
+        <div className="modal-actions">
+              {user?.role === 'admin' && (
+            <button 
+              onClick={handleDelete} 
+              className="action-button"
+              disabled={isDeleting || !selectedChannel}
+            >
+              {isDeleting ? "Deleting..." : "Delete Channel"}
+            </button>
+          )}
+        </div>
+      </AdminOnly>
     </div>
   );
 }
+DeleteChannel.propTypes = {
+  onClose: PropTypes.func
+};
 
 export default DeleteChannel;

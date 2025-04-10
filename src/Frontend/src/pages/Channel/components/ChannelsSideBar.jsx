@@ -4,6 +4,8 @@ import JoinChannel from './JoinChannel';
 import DeleteChannel from './DeleteChannel';
 import ModalPortal from '../../../Components/Modal/ModalPortal';
 import { fetchingService } from '../../../services/fetchingService';
+import { useAuth } from '../../../components/AuthContext';
+
 
 const ChannelsSidebar = ({
     serverName,
@@ -16,6 +18,7 @@ const ChannelsSidebar = ({
     setIsLoadingMessages,
     isLoading
 }) => {
+    const { user } = useAuth(); // Get logged-in user from context
     const [creatingChannel, setCreatingChannel] = useState(false);
     const inputRef = useRef(null);
     const modalRef = useRef();
@@ -116,9 +119,10 @@ const ChannelsSidebar = ({
                     <button className="server-header-btn" onClick={openModal} title="Join Channel">
                         <span>+</span>
                     </button>
-                    <button className="server-header-btn" onClick={openModalDelete} title="Delete Channel">
+                    {user.role === "admin" && <button className="server-header-btn" onClick={openModalDelete} title="Delete Channel">
                         <span>×</span>
-                    </button>
+                    </button>}
+
                 </div>
             </div>
 
@@ -139,7 +143,7 @@ const ChannelsSidebar = ({
             <div>
                 <div className="channels-category">
                     <span>Channels</span>
-                    <button
+                    {user.role === "admin" &&                     <button
                         className="create-channel-button"
                         onClick={() => {
                             setCreatingChannel(!creatingChannel);
@@ -147,7 +151,7 @@ const ChannelsSidebar = ({
                         title={creatingChannel ? "Cancel" : "Create Channel"}
                     >
                         {creatingChannel ? '-' : '+'}
-                    </button>
+                    </button>}
                 </div>
 
                 <div className="channel-list">

@@ -208,6 +208,32 @@
   align-items: baseline;
   gap: 8px;
   margin-bottom: 4px;
+  position: relative; /* Add this to position the delete button */
+}
+
+.delete-message-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0 4px;
+  margin-left: auto; /* This will push it to the right */
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-message-btn:hover {
+  color: #e74c3c;
+  background-color: #f8f8f8;
+}
+
+.delete-icon {
+  font-weight: bold;
 }
 
 .message-author {

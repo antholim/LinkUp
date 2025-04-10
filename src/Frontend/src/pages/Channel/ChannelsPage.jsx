@@ -98,6 +98,10 @@ const ChannelsPage = () => {
                                     };
                                 });
                                 break;
+                            case 'delete_message':
+                                console.log("deleting message...")
+                                window.location.reload();
+                                break;
                             case 'message_blocked':
                                 console.log("Message blocked case triggered:", message);
                                 alert(`${message.data.message}\nBlocked by: ${message.data.blockedBy.join(", ")}`);
@@ -162,18 +166,17 @@ const ChannelsPage = () => {
         };
     }, [sendJSON]);
 
-    // Heartbeat
-    // useEffect(() => {
-    //     if (!isConnected) return;
+    useEffect(() => {
+        if (!isConnected) return;
 
-    //     const pingInterval = setInterval(() => {
-    //         if (wsRef.current?.readyState === WebSocket.OPEN) {
-    //             sendJSON('ping', {});
-    //         }
-    //     }, 30000);
+        const pingInterval = setInterval(() => {
+            if (wsRef.current?.readyState === WebSocket.OPEN) {
+                sendJSON('ping', {});
+            }
+        }, 30000);
 
-    //     return () => clearInterval(pingInterval);
-    // }, [isConnected, sendJSON]);
+        return () => clearInterval(pingInterval);
+    }, [isConnected, sendJSON]);
 
     return (
         <div className="channels-container">
