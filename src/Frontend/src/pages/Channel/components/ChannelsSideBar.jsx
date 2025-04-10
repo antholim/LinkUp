@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { categories } from '../../../data/FakeChannels';
 import JoinChannel from './JoinChannel';
 import DeleteChannel from './DeleteChannel';
@@ -23,6 +23,25 @@ const ChannelsSidebar = ({
     const inputRef = useRef(null);
     const modalRef = useRef();
     const modalDeleteRef = useRef();
+
+    useEffect(() => {
+        const selectLastChannel = async () => {
+            if (channels.length > 0 && !activeChannel.channelID) {
+                const lastChannelID = localStorage.getItem('lastChannelID');
+                const channelToSelect = lastChannelID ? channels.find(ch => ch._id === lastChannelID) : channels[0];
+                
+                if (channelToSelect) {
+                    handleSelectChannel({
+                        channelID: channelToSelect._id,
+                        channelName: channelToSelect.channelName
+                    });
+                }
+            }
+        };
+        if (!isLoading) {
+            selectLastChannel();
+        }
+    }, [channels, activeChannel.channelID, isLoading]);
 
     const handleCreateChannel = async () => {
         const channelName = inputRef.current.value.trim();
@@ -49,6 +68,8 @@ const ChannelsSidebar = ({
 
     const handleSelectChannel = async (ch) => {
         if (activeChannel.channelID === ch.channelID) return;
+
+        localStorage.setItem('lastChannelID', ch.channelID);
 
         onChannelSelect(ch);
         setIsLoadingMessages(true);
