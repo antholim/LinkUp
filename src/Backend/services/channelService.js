@@ -20,7 +20,10 @@ export default class ChannelService {
     return channel;
   }
   async getAllChannel() {
-    const channels = await Channel.find({ isDeleted: { $ne: true } });
+    const channels = await Channel.find({ 
+      isDeleted: { $ne: true },
+      type: { $ne: "direct_message" }
+    });
     const channelsNoMessages = channels.map(({_id, channelName, type, members}) => ({_id, channelName, type, members}));
     return channelsNoMessages;
   }
