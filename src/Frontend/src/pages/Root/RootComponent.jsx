@@ -24,6 +24,7 @@ function RootPage() {
         marginBottom: '2rem',
     };
 
+
     const titleStyles = {
         fontSize: '4rem',  // large font size for LINKUP
         fontWeight: 'bold',
@@ -45,6 +46,7 @@ function RootPage() {
     };
 
     const columnStyles = {
+        textAlign: 'center',
         flex: 1,
         padding: '1.5rem',
         border: '1px solid #ddd',
