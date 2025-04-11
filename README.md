@@ -1,18 +1,24 @@
 # Project Name: LinkUp
 
 ## Description
-LinkUp is a modern messaging platform designed to streamline communication and collaboration for teams, communities, and individuals inspired by platforms like Discord, Slack, and Microsoft Teams.
+**LinkUp** is a modern messaging platform built for teams, communities, and individuals. Inspired by platforms like **Discord**, **Slack**, and **Microsoft Teams**, LinkUp offers a sleek, intuitive experience with a standout feature: our **AI Monetizer**, which maintains safe and engaging channels—without the need for manual moderation.
 
 ## Objective
-Our goal is to create a seamless, user-friendly experience with enhanced features to meet the needs of diverse users. Whether for work, gaming, or socializing, LinkUp aims to bring people closer together.
+Our mission is to deliver a seamless, user-friendly experience across various use cases—work, gaming, or socializing. LinkUp connects people through efficient communication and collaborative tools.
+
+---
 
 ## Core Features
-- **Real-time messaging**: Instant text and messages
-- **Channels & Groups**: Organize conversations into public or private channels.
-- **Customizable Profiles**: Personalize your profile with avatars, statuses, and more.
-- **Cross-Platform Support**: Access the platform on web
-- **Security**: JWT tokens for security
+- **Real-Time Messaging**: Send and receive messages instantly.
+- **Channels & Groups**: Organize conversations in public or private spaces.
+- **Cross-Platform Access**: Use LinkUp directly through any web browser.
+- **Security**: Protected by JWT-based authentication.
 
+## Bonus Features
+- **AI Monetizer**: Automatically analyzes and monetizes channels and DMs while enforcing safe content policies.
+- **Session Persistence**: Automatically restores your last visited chat in both channels and direct messages.
+
+---
 ## Team Members
 | Name            | Student Number | GitHub Username  |
 |-----------------|----------------|------------------|
