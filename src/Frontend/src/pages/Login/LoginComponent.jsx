@@ -30,15 +30,16 @@ function LoginComponent() {
                 localStorage.setItem('accessToken', data.accessToken);
                 setIsAuthenticated(true)
                 setUser(data.user);
-                navigate('/home');
+                window.location.href = '/home';
             } else {
                 alert('Login failed: ' + data.message);
             }
         } catch (error) {
             alert('An error occured: ' + error.message);
-        } finally {
-            navigate('/home');
-        }
+        } 
+        // finally {
+        //     navigate('/');
+        // }
     };
     
     return (

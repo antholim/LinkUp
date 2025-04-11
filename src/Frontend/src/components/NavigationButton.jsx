@@ -7,7 +7,7 @@ const NavigationButtons = () => {
 
   return (
     <div className="nav-buttons">
-      <button onClick={() => navigate(-1)}>Go Back</button>
+      <button onClick={() => navigate("/")}>Go Back</button>
     </div>
   );
 };

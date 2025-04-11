@@ -12,9 +12,9 @@ function HomeComponent() {
     };
     return (
         <>
-            <div style={{ textAlign: "center", marginTop: "30px", padding: "0 20px", background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)", minHeight: "100vh" }}>
+            <div style={{ textAlign: "center", marginTop: "0px", padding: "0 20px", background: "linear-gradient(135deg, #fff8f0 0%, #fff 100%)", minHeight: "100vh" }}>
                 <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px 20px" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "30px" }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "0px" }}>
                         <div style={{
                             width: "50px",
                             height: "50px",

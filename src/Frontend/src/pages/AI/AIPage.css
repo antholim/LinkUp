@@ -1,52 +1,86 @@
-/* Styles for AI Page Container */
-.AI-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f1e0c6;
-}
-
-/* Styles for AI Filter Component */
-.ai-container {
-    background: #f8f9fa;;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f9ede3, #f8b25d);
+    min-height: 100vh;
+    font-family: sans-serif;
+  }
+  
+  .ai-container {
+    background: white;
+    padding: 50px;
+    border-radius: 30px;
+    margin: 0 auto;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.01);
     width: 400px;
+    max-width: 90%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-}
-
-/* Styles for filter options */
-.filter-options {
+    border: 1px solid #eaeef2;
+  }
+  
+  .ai-container h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .ai-container p {
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Styles for filter options */
+  .filter-options {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 15px;
-}
-
-/* Checkbox label styles */
-.filter-label {
+    text-align: left;
+  }
+  
+  /* Checkbox label styles */
+  .filter-label {
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 16px;
     cursor: pointer;
-}
-
-/* Save button styles */
-.save-button {
-    background-color: #e67e22;
+    padding: 8px 0;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .filter-label:hover {
+    background-color: #f0f4f8;
+  }
+  
+  /* Save button styles */
+  .save-button {
+    background: linear-gradient(to right, #f5a623, #f26e08);
     color: white;
     border: none;
-    padding: 10px 15px;
-    margin-top: 15px;
-    border-radius: 5px;
+    padding: 12px 18px;
+    margin-top: 1.5rem;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
+    font-weight: 500;
     width: 100%;
-}
-
-.save-button:hover {
-    background-color: #e67e22;
-}
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.2);
+  }
+  
+  .save-button:hover {
+    background: linear-gradient(to right, #e69616, #e86a10);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+  }
+  
+  .save-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
